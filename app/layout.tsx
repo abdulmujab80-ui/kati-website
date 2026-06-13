@@ -1,7 +1,7 @@
 "use client";
 
 import "./globals.css";
-import Image from "next/image"; 
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 export default function RootLayout({
@@ -24,10 +24,10 @@ export default function RootLayout({
 
   return (
     <html lang="id" style={{ scrollBehavior: 'smooth' }}>
-      <body style={{ 
-        margin: 0, 
-        padding: 0, 
-        fontFamily: fontGlobal, 
+      <body style={{
+        margin: 0,
+        padding: 0,
+        fontFamily: fontGlobal,
         backgroundColor: '#f8fafc',
         display: 'flex',
         flexDirection: 'column',
@@ -35,9 +35,10 @@ export default function RootLayout({
         overflowX: 'hidden',
         WebkitFontSmoothing: 'antialiased'
       }}>
-        
+
         {/* 🟢 STYLE INJEKSI PREMIUM (Hover Navigasi, Footer, & Animasi Transisi Halaman) */}
-        <style dangerouslySetInnerHTML={{ __html: `
+        <style dangerouslySetInnerHTML={{
+          __html: `
           /* Efek Animasi Transisi Fade-In Saat Pindah Halaman */
           .konten-halaman {
             animation: efekMulai 0.4s ease-out forwards;
@@ -107,15 +108,15 @@ export default function RootLayout({
             text-align: left;
           }
         `}} />
-        
+
         {/* 🧭 NAVIGATION BAR PREMIUM (Sticky & Semi-Transparan Luxury) */}
-        <nav style={{ 
-          backgroundColor: '#053e2f', 
-          color: 'white', 
-          padding: '12px 40px', 
-          display: 'flex', 
+        <nav style={{
+          backgroundColor: '#053e2f',
+          color: 'white',
+          padding: '12px 40px',
+          display: 'flex',
           alignItems: 'center',
-          justifyContent: 'space-between', 
+          justifyContent: 'space-between',
           boxShadow: '0 4px 25px rgba(0,0,0,0.08)',
           position: 'sticky',
           top: 0,
@@ -123,16 +124,14 @@ export default function RootLayout({
           borderBottom: '1px solid rgba(255,255,255,0.05)',
           backdropFilter: 'blur(10px)'
         }}>
-          
+
           {/* 1. KIRI: Sektor Identitas Logo */}
           <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '12px', flex: '1 0 240px', textDecoration: 'none' }}>
             <div style={{ display: 'flex', alignItems: 'center', filter: 'drop-shadow(0 2px 6px rgba(16,185,129,0.2))' }}>
-              <Image 
-                src="/Logo Kati.png" 
-                alt="Logo Kampus Alam" 
-                width={38}  
-                height={38} 
-                style={{ objectFit: 'contain' }} 
+              <img
+                src="/logo-kati.png"
+                alt="Logo Kampus Alam"
+                style={{ height: '40px', width: 'auto', objectFit: 'contain' }}
               />
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', lineHeight: '1.2' }}>
@@ -144,21 +143,21 @@ export default function RootLayout({
               </span>
             </div>
           </a>
-          
+
           {/* 2. TENGAH: Menu Navigasi dengan Indikator Kapsul Menyala */}
-          <div style={{ 
-            display: 'flex', 
-            gap: '8px', 
-            justifyContent: 'center', 
+          <div style={{
+            display: 'flex',
+            gap: '8px',
+            justifyContent: 'center',
             alignItems: 'center',
             flex: '2 0 auto'
           }}>
             {daftarMenu.map((menu) => {
               const apakahAktif = pathname === menu.url;
               return (
-                <a 
-                  key={menu.url} 
-                  href={menu.url} 
+                <a
+                  key={menu.url}
+                  href={menu.url}
                   className="tautan-nav"
                   style={{
                     color: apakahAktif ? '#ffffff' : '#cbd5e1',
@@ -190,10 +189,10 @@ export default function RootLayout({
         </div>
 
         {/* 🧱 FOOTER GLOBAL (Tampilan Super Mewah, Gelap, & Profesional) */}
-        <footer style={{ 
-          backgroundColor: '#090d16', 
-          color: '#94a3b8', 
-          padding: '80px 40px 35px 40px', 
+        <footer style={{
+          backgroundColor: '#090d16',
+          color: '#94a3b8',
+          padding: '80px 40px 35px 40px',
           borderTop: '5px solid #10b981',
           flexShrink: 0,
           position: 'relative',
@@ -203,17 +202,17 @@ export default function RootLayout({
           <div style={{ position: 'absolute', top: 0, right: 0, width: '300px', height: '300px', background: 'radial-gradient(circle, rgba(16,185,129,0.03) 0%, transparent 70%)', pointerEvents: 'none' }} />
 
           <div style={{ maxWidth: '1150px', margin: '0 auto' }}>
-            
+
             <div className="grid-footer">
-              
+
               {/* Kolom 1: Profil Singkat Ringkas */}
               <div style={{ paddingRight: '20px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px' }}>
-                  <Image 
-                    src="/Logo Kati.png" 
-                    alt="Logo Kampus Alam" 
-                    width={34}  
-                    height={34} 
+                  <Image
+                    src="/Logo Kati.png"
+                    alt="Logo Kampus Alam"
+                    width={34}
+                    height={34}
                   />
                   <span style={{ color: 'white', fontWeight: '800', fontSize: '17px', letterSpacing: '0.5px' }}>
                     KATI INDONESIA
@@ -258,11 +257,11 @@ export default function RootLayout({
             </div>
 
             {/* Hak Cipta & Garis Pembatas Bawah */}
-            <div style={{ 
-              borderTop: '1px solid #1e293b', 
-              paddingTop: '28px', 
-              textAlign: 'center', 
-              fontSize: '13px', 
+            <div style={{
+              borderTop: '1px solid #1e293b',
+              paddingTop: '28px',
+              textAlign: 'center',
+              fontSize: '13px',
               color: '#475569',
               display: 'flex',
               justifyContent: 'space-between',
