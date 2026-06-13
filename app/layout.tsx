@@ -57,6 +57,7 @@ export default function RootLayout({
             border-radius: 20px;
             position: relative;
             transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            white-space: nowrap;
           }
           .tautan-nav:hover {
             color: #34d399 !important;
@@ -75,6 +76,7 @@ export default function RootLayout({
             cursor: pointer;
             box-shadow: 0 4px 14px rgba(16, 185, 129, 0.25);
             transition: all 0.2s ease;
+            white-space: nowrap;
           }
           .btn-donasi-nav:hover {
             background-color: #059669;
@@ -109,11 +111,11 @@ export default function RootLayout({
           }
         `}} />
 
-        {/* 🧭 NAVIGATION BAR PREMIUM (Sticky & Semi-Transparan Luxury) */}
+        {/* 🧭 NAVIGATION BAR PREMIUM (Sticky & Mobile-Friendly Luxury) */}
         <nav style={{
           backgroundColor: '#053e2f',
           color: 'white',
-          padding: '12px 40px',
+          padding: '12px 24px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
@@ -122,11 +124,13 @@ export default function RootLayout({
           top: 0,
           zIndex: 1000,
           borderBottom: '1px solid rgba(255,255,255,0.05)',
-          backdropFilter: 'blur(10px)'
+          backdropFilter: 'blur(10px)',
+          flexWrap: 'wrap',
+          gap: '15px'
         }}>
 
           {/* 1. KIRI: Sektor Identitas Logo */}
-          <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '12px', flex: '1 0 240px', textDecoration: 'none' }}>
+          <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '12px', flex: '1 0 auto', textDecoration: 'none' }}>
             <div style={{ display: 'flex', alignItems: 'center', filter: 'drop-shadow(0 2px 6px rgba(16,185,129,0.2))' }}>
               <img
                 src="/logo-kati.png"
@@ -150,7 +154,8 @@ export default function RootLayout({
             gap: '8px',
             justifyContent: 'center',
             alignItems: 'center',
-            flex: '2 0 auto'
+            flexFlow: 'wrap',
+            flex: '1 0 auto'
           }}>
             {daftarMenu.map((menu) => {
               const apakahAktif = pathname === menu.url;
@@ -173,7 +178,7 @@ export default function RootLayout({
           </div>
 
           {/* 3. KANAN: Akses Aksi Donasi */}
-          <div style={{ display: 'flex', justifyContent: 'flex-end', flex: '1 0 120px' }}>
+          <div style={{ display: 'flex', justifyContent: 'center', flex: '1 0 auto' }}>
             <a href="/donasi" style={{ textDecoration: 'none' }}>
               <button className="btn-donasi-nav">
                 Donasi 💚
@@ -183,16 +188,16 @@ export default function RootLayout({
 
         </nav>
 
-        {/* 📋 ISI HALAMAN UTAMA (Dengan Tambahan Animasi Masuk Halus) */}
+        {/* 📋 ISI HALAMAN UTAMA */}
         <div className="konten-halaman" style={{ flex: '1 0 auto' }}>
           {children}
         </div>
 
-        {/* 🧱 FOOTER GLOBAL (Tampilan Super Mewah, Gelap, & Profesional) */}
+        {/* 🧱 FOOTER GLOBAL */}
         <footer style={{
           backgroundColor: '#090d16',
           color: '#94a3b8',
-          padding: '80px 40px 35px 40px',
+          padding: '80px 24px 35px 24px',
           borderTop: '5px solid #10b981',
           flexShrink: 0,
           position: 'relative',
@@ -208,11 +213,10 @@ export default function RootLayout({
               {/* Kolom 1: Profil Singkat Ringkas */}
               <div style={{ paddingRight: '20px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px' }}>
-                  <Image
-                    src="/Logo Kati.png"
+                  <img
+                    src="/logo-kati.png"
                     alt="Logo Kampus Alam"
-                    width={34}
-                    height={34}
+                    style={{ width: '34px', height: '34px', objectFit: 'contain' }}
                   />
                   <span style={{ color: 'white', fontWeight: '800', fontSize: '17px', letterSpacing: '0.5px' }}>
                     KATI INDONESIA
