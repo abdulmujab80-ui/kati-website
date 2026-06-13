@@ -12,15 +12,104 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* ===================================================
+   GAYA INTERAKTIF NAVBAR & DROPDOWN (Tulis Biasa Saja)
+   =================================================== */
+
+.nav-link {
+  color: #cbd5e1 !important;
+  text-decoration: none !important;
+  font-weight: 500;
+  font-size: 14px;
+  transition: all 0.25s ease;
+  position: relative;
+  padding: 6px 4px;
+}
+
+.nav-link:hover {
+  color: #ffffff !important;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background-color: #34d399;
+  transition: all 0.25s ease;
+  transform: translateX(-50%);
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+/* DROPDOWN MENU UTK 5 PROGRAM */
+.dropdown-menu {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #047857;
+  min-width: 250px;
+  box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.2);
+  z-index: 1100;
+  border-radius: 10px;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  overflow: hidden;
+  padding: 6px 0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dropdown-item {
+  color: #e2e8f0 !important;
+  padding: 12px 18px;
+  text-decoration: none;
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.dropdown-item:hover {
+  background-color: #059669;
+  color: #ffffff !important;
+  padding-left: 24px;
+}
+
+.dropdown-menu:hover .dropdown-content {
+  display: block;
+}
+
+/* TOMBOL DONASI */
+.btn-donasi {
+  background-color: #10b981;
+  color: white;
+  border: none;
+  padding: 9px 20px;
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2);
+  transition: all 0.2s ease;
+}
+
+.btn-donasi:hover {
+  background-color: #059669;
+  transform: translateY(-1px);
 }
