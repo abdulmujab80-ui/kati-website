@@ -92,7 +92,7 @@ export default function HalamanArtikel() {
         
         {/* NAVIGASI FILTER KATEGORI */}
         <div style={{ display: "flex", justifyContent: "center", gap: "10px", flexWrap: "wrap", marginBottom: "40px" }}>
-          {["Semua Tulisan", "Alam & Ekologi", "Konservasi", "Edukasi Lingkungan"].map((kat) => (
+          {["Semua Tulisan", "Sudut Teduh","Gema Semesta", "Paradigma Jaga", "Benih Pikir"].map((kat) => (
             <button
               key={kat}
               onClick={() => setKategoriAktif(kat)}

@@ -1,152 +1,202 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { supabase } from "@/lib/supabase";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
-interface Artikel {
-  id: number;
-  created_at: string;
-  nama_penulis: string;
-  topik: string;
-  kategori: string;
-  waktu_baca: string;
-  judul: string;
-  intisari: string;
-  konten_lengkap: string;
-  gambar: string;
-  views: number;
-}
-
-// INI WAJIB ADA BIAR TIDAK ERROR
-export default function DetailArtikel() {
-  const params = useParams();
+export default function AdminLoginPortal() {
   const router = useRouter();
-  
-  const [artikel, setArtikel] = useState<Artikel | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [pesanError, setPesanError] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (params.id) {
-      fetchDetailDanHitungView(params.id as string);
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(false);
+    setPesanError(null);
+
+    if (!email || !password) {
+      setPesanError("Semua kolom wajib diisi.");
+      return;
     }
-  }, [params.id]);
 
-  const fetchDetailDanHitungView = async (id: string) => {
     try {
-      // Ambil data artikel
-      const { data, error } = await supabase
-        .from("artikel")
-        .select("*")
-        .eq("id", id)
-        .single();
+      setLoading(true);
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
 
       if (error) throw error;
 
-      if (data) {
-        setArtikel(data);
-
-        // Langsung hitung nambah view +1 di background
-        const viewsBaru = (data.views || 0) + 1;
-        await supabase
-          .from("artikel")
-          .update({ views: viewsBaru })
-          .eq("id", id);
+      if (data?.user) {
+        // Jika login berhasil, arahkan ke dashboard manajemen artikel admin
+        router.push("/admin/dashboard");
       }
-    } catch (error) {
-      console.error("Gagal mengambil detail artikel:", error);
+    } catch (error: any) {
+      setPesanError(error.message || "Gagal masuk. Periksa kembali akun Anda.");
     } finally {
       setLoading(false);
     }
   };
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("id-ID", {
-      day: "numeric", month: "long", year: "numeric"
-    });
-  };
-
-  if (loading) {
-    return (
-      <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", minHeight: "100vh", backgroundColor: "#f8fafc" }}>
-        <div style={{ width: "50px", height: "50px", border: "4px solid #e2e8f0", borderTopColor: "#10b981", borderRadius: "50%", animation: "spin 1s linear infinite", marginBottom: "20px" }}></div>
-        <h2 style={{ color: "#0f172a", fontSize: "18px" }}>Menyiapkan lembar bacaan...</h2>
-        <style>{`@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }`}</style>
-      </div>
-    );
-  }
-
-  if (!artikel) {
-    return (
-      <div style={{ textAlign: "center", padding: "100px 20px", backgroundColor: "#f8fafc", minHeight: "100vh" }}>
-        <h1 style={{ fontSize: "60px", margin: "0 0 20px 0" }}>🥀</h1>
-        <h2 style={{ color: "#0f172a", marginBottom: "16px" }}>Artikel tidak ditemukan!</h2>
-        <button onClick={() => router.push('/artikel')} style={{ padding: "10px 24px", backgroundColor: "#064e3b", color: "white", borderRadius: "30px", border: "none", cursor: "pointer", fontWeight: "bold" }}>Kembali ke Pustaka</button>
-      </div>
-    );
-  }
+  const fontStyle = { fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif' };
 
   return (
-    <div style={{ backgroundColor: "#f8fafc", minHeight: "100vh", fontFamily: "system-ui, -apple-system, sans-serif" }}>
+    <div style={{ 
+      ...fontStyle,
+      backgroundColor: "#f4fbf7", 
+      minHeight: "100vh", 
+      display: "flex", 
+      alignItems: "center", 
+      justifyContent: "center",
+      padding: "20px"
+    }}>
       
-      {/* 1. BAGIAN FOTO SAMPUL BESAR */}
-      <div style={{ width: "100%", height: "50vh", minHeight: "400px", position: "relative", backgroundColor: "#0f172a" }}>
-        <img 
-          src={artikel.gambar} 
-          alt={artikel.judul} 
-          style={{ width: "100%", height: "100%", objectFit: "cover", opacity: 0.8 }} 
-        />
-        
-        {/* Tombol Back */}
-        <button 
-          onClick={() => router.push('/artikel')}
-          style={{ position: "absolute", top: "30px", left: "30px", padding: "10px 24px", backgroundColor: "rgba(255,255,255,0.15)", backdropFilter: "blur(10px)", color: "white", border: "1px solid rgba(255,255,255,0.3)", borderRadius: "30px", cursor: "pointer", fontWeight: "bold", display: "flex", alignItems: "center", gap: "8px" }}
-        >
-          ← Kembali
-        </button>
-      </div>
+      {/* 🟢 STYLE INJEKSI UNTUK BEHAVIOR INPUT & TOMBOL PERSIS GAMBAR */}
+      <style dangerouslySetInnerHTML={{ __html: `
+        .input-portal {
+          width: 100%;
+          padding: 16px;
+          font-size: 15px;
+          border: 1.5px solid #e2e8f0;
+          border-radius: 12px;
+          background-color: #f8fafc;
+          color: #0f172a;
+          outline: none;
+          transition: all 0.2s ease;
+          box-sizing: border-box;
+        }
+        .input-portal:focus {
+          border-color: #10b981 !important;
+          background-color: #ffffff !important;
+          box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
+        }
+        .tombol-masuk {
+          width: 100%;
+          background-color: #063e2b;
+          color: white;
+          border: none;
+          padding: 16px;
+          font-size: 14px;
+          font-weight: 700;
+          letter-spacing: 1px;
+          border-radius: 12px;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          margin-top: 10px;
+        }
+        .tombol-masuk:hover {
+          background-color: #022c22;
+          transform: translateY(-1px);
+          box-shadow: 0 10px 20px -5px rgba(6, 62, 43, 0.3);
+        }
+        .tombol-masuk:disabled {
+          background-color: #94a3b8;
+          cursor: not-allowed;
+          transform: none;
+          box-shadow: none;
+        }
+        .link-kembali {
+          color: #8da2bb;
+          text-decoration: none;
+          font-size: 13px;
+          font-weight: 600;
+          transition: color 0.2s;
+        }
+        .link-kembali:hover {
+          color: #064e3b;
+        }
+      `}} />
 
-      {/* 2. KOTAK KONTEN ARTIKEL (Elegan menumpuk di atas gambar) */}
-      <div style={{ maxWidth: "800px", margin: "-120px auto 0", backgroundColor: "white", borderRadius: "24px 24px 0 0", padding: "50px", position: "relative", zIndex: 10, boxShadow: "0 -10px 40px rgba(0,0,0,0.08)" }}>
+      {/* 🛡️ KARTU PORTAL VERIFIKASI */}
+      <div style={{ 
+        backgroundColor: "#ffffff", 
+        width: "100%", 
+        maxWidth: "460px", 
+        borderRadius: "24px", 
+        padding: "50px 40px", 
+        boxShadow: "0 20px 40px -10px rgba(0, 0, 0, 0.05)",
+        textAlign: "center"
+      }}>
         
-        {/* Kategori, Views, Waktu Baca */}
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "16px", alignItems: "center", marginBottom: "24px", fontSize: "14px", fontWeight: "600" }}>
-          <span style={{ backgroundColor: "#10b981", color: "white", padding: "6px 16px", borderRadius: "20px", letterSpacing: "1px", textTransform: "uppercase", fontSize: "12px" }}>
-            {artikel.kategori}
-          </span>
-          <span style={{ color: "#64748b" }}>⏱️ {artikel.waktu_baca}</span>
-          <span style={{ color: "#cbd5e1" }}>|</span>
-          <span style={{ color: "#64748b" }}>👁️ {(artikel.views || 0) + 1} Pembaca</span>
+        {/* Lingkaran Perisai / Badge Proteksi */}
+        <div style={{ 
+          width: "72px", 
+          height: "72px", 
+          backgroundColor: "#d1fae5", 
+          borderRadius: "50%", 
+          display: "flex", 
+          alignItems: "center", 
+          justifyContent: "center", 
+          margin: "0 auto 24px auto"
+        }}>
+          {/* Menggunakan SVG Shield Premium yang Sesuai dengan Gambar image_554f5f.png */}
+          <svg width="32" height="36" viewBox="0 0 24 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 0L2 4V13C2 19.2 6.3 24.9 12 26.5C17.7 24.9 22 19.2 22 13V4L12 0Z" fill="#3b82f6"/>
+          </svg>
         </div>
-        
-        {/* Judul Artikel */}
-        <h1 style={{ fontSize: "40px", color: "#0f172a", marginBottom: "30px", lineHeight: "1.3", fontWeight: "900", letterSpacing: "-0.5px" }}>
-          {artikel.judul}
+
+        {/* Judul Teks */}
+        <h1 style={{ fontSize: "28px", fontWeight: "800", color: "#063e2b", margin: "0 0 8px 0", letterSpacing: "-0.5px" }}>
+          Portal Verifikasi
         </h1>
+        <p style={{ fontSize: "14.5px", color: "#70859f", margin: "0 0 35px 0", fontWeight: "500" }}>
+          Silakan masukkan email admin KATI Anda.
+        </p>
 
-        {/* Info Penulis */}
-        <div style={{ display: "flex", alignItems: "center", gap: "16px", marginBottom: "40px", paddingBottom: "30px", borderBottom: "1px solid #f1f5f9" }}>
-          <div style={{ width: "48px", height: "48px", borderRadius: "50%", backgroundColor: "#064e3b", display: "flex", justifyContent: "center", alignItems: "center", color: "white", fontWeight: "bold", fontSize: "20px" }}>
-            {artikel.nama_penulis ? artikel.nama_penulis.charAt(0).toUpperCase() : "K"}
+        {/* Feedback Error jika ada */}
+        {pesanError && (
+          <div style={{ backgroundColor: "#fef2f2", color: "#991b1b", padding: "12px", borderRadius: "8px", fontSize: "13px", marginBottom: "20px", textAlign: "left", fontWeight: "500", border: "1px solid #fee2e2" }}>
+            ⚠️ {pesanError}
           </div>
+        )}
+
+        {/* Form Login */}
+        <form onSubmit={handleLogin} style={{ textAlign: "left", display: "flex", flexDirection: "column", gap: "20px" }}>
+          
+          {/* Field Email */}
           <div>
-            <p style={{ margin: "0 0 4px 0", fontSize: "16px", fontWeight: "700", color: "#334155" }}>Oleh {artikel.nama_penulis}</p>
-            <p style={{ margin: 0, fontSize: "14px", color: "#94a3b8" }}>Diterbitkan pada {formatDate(artikel.created_at)}</p>
+            <label style={{ display: "block", fontSize: "12px", fontWeight: "800", color: "#2d3a4a", letterSpacing: "0.5px", marginBottom: "8px" }}>
+              ALAMAT EMAIL
+            </label>
+            <input 
+              type="email" 
+              className="input-portal"
+              placeholder="admin@kati.id"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              disabled={loading}
+            />
           </div>
-        </div>
-        
-        {/* Intisari (Jika ingin ditampilkan juga di dalam artikel) */}
-        <div style={{ marginBottom: "30px", padding: "20px", borderLeft: "4px solid #10b981", backgroundColor: "#f0fdf4", color: "#064e3b", fontSize: "18px", fontStyle: "italic", lineHeight: "1.6" }}>
-          {artikel.intisari}
-        </div>
 
-        {/* Teks Isi Artikel */}
-        <div style={{ color: "#334155", fontSize: "19px", lineHeight: "1.9", textAlign: "justify" }}>
-          {artikel.konten_lengkap.split('\n').map((paragraf, index) => (
-            <p key={index} style={{ marginBottom: "28px" }}>
-              {paragraf}
-            </p>
-          ))}
+          {/* Field Password */}
+          <div>
+            <label style={{ display: "block", fontSize: "12px", fontWeight: "800", color: "#2d3a4a", letterSpacing: "0.5px", marginBottom: "8px" }}>
+              KATA SANDI
+            </label>
+            <input 
+              type="password" 
+              className="input-portal"
+              placeholder="••••••••"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              disabled={loading}
+            />
+          </div>
+
+          {/* Tombol Aksi */}
+          <button type="submit" className="tombol-masuk" disabled={loading}>
+            {loading ? "MEMPROSES..." : "MASUK KE SISTEM"}
+          </button>
+        </form>
+
+        {/* Opsi Kembali */}
+        <div style={{ marginTop: "35px" }}>
+          <a href="/artikel" className="link-kembali">
+            ← Kembali ke Beranda Utama
+          </a>
         </div>
 
       </div>
