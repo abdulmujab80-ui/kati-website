@@ -16,7 +16,7 @@ const DATABASE_VOLUNTEER = {
         asal: "Malang", 
         bergabung: "2023", 
         email: "abdul.mujab@kati.or.id", 
-        status: "Aktif Lapangan",
+        status: "Alumni",
         foto: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80", // Gunakan URL foto asli Anda nanti
         linkSertifikat: "https://drive.google.com/file/d/1g_ilo0Unz1j4NTIvTzjpXdtOYl3H1Gsj/view?usp=sharing" 
       },
@@ -26,7 +26,7 @@ const DATABASE_VOLUNTEER = {
         asal: "Surabaya", 
         bergabung: "2023", 
         email: "rahmat.h@kati.or.id", 
-        status: "Aktif Lapangan",
+        status: "Alumni",
         foto: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=256&q=80",
         linkSertifikat: "#" 
       },
@@ -36,7 +36,7 @@ const DATABASE_VOLUNTEER = {
         asal: "Batu", 
         bergabung: "2023", 
         email: "siti.rahma@kati.or.id", 
-        status: "Standby Analisis",
+        status: "Alumni",
         foto: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=256&q=80",
         linkSertifikat: "#" 
       }
@@ -53,7 +53,7 @@ const DATABASE_VOLUNTEER = {
         asal: "Jombang", 
         bergabung: "2025", 
         email: "fauzi.ahmad@kati.or.id", 
-        status: "Aktif Sosialisasi",
+        status: "Alumni",
         foto: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=256&q=80",
         linkSertifikat: "#" 
       },
@@ -63,7 +63,7 @@ const DATABASE_VOLUNTEER = {
         asal: "Kediri", 
         bergabung: "2025", 
         email: "dewi.les@kati.or.id", 
-        status: "Aktif Sosialisasi",
+        status: "Alumni",
         foto: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=256&q=80",
         linkSertifikat: "#" 
       }
@@ -76,161 +76,161 @@ const DATABASE_VOLUNTEER = {
     anggota: [
       { 
         nama: "Tsabita Raghdah", 
-        peran: "Analis Kualitas Air", 
+        peran: "Pendidikan dan Inovasi", 
         asal: "Surabaya", 
         bergabung: "2026", 
         email: "tsabitaraghdah72@gmail.com", 
-        status: "Laboratorium",
+        status: "Aktif",
         foto: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=256&q=80",
         linkSertifikat: "#" 
       },
       { 
         nama: "Pinka Alissa El Indra", 
-        peran: "Surveyor Lapangan", 
+        peran: "Kreatif dan Komunikasi", 
         asal: "Banyuwangi", 
         bergabung: "2026", 
         email: "240502110196@student.uin-malang.ac.id", 
-        status: "Aktif Lapangan",
+        status: "Aktif",
         foto: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=256&q=80",
         linkSertifikat: "#" 
       },
       { 
         nama: "M RAFLI AUDREMI", 
-        peran: "Edukator Ekologi", 
+        peran: "Humas dan Kemitraan", 
         asal: "Malang", 
         bergabung: "2026", 
         email: "mrafliaudremi@gmail.com", 
-        status: "Aktif Lapangan",
+        status: "Aktif",
         foto: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=256&q=80",
         linkSertifikat: "#" 
       },
       { 
         nama: "Mochammad Farrel Gavra Utama", 
-        peran: "Logistik & Rescue", 
+        peran: "Humas dan Kemitraan", 
         asal: "Malang", 
         bergabung: "2026", 
         email: "akunkobongnih@gmail.com", 
-        status: "Aktif Lapangan",
+        status: "Aktif",
         foto: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=256&q=80",
         linkSertifikat: "#" 
       },
       { 
         nama: "Alfina Nurshinta Dewi", 
-        peran: "Fasilitator Komunitas", 
+        peran: "Pendidikan dan Inovasi", 
         asal: "Malang", 
         bergabung: "2026", 
         email: "pinaa.dewii@gmail.com", 
-        status: "Standby Analisis",
+        status: "Aktif",
         foto: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=256&q=80",
         linkSertifikat: "#" 
       },
       { 
         nama: "Aisyah Itsnaini Nur Hasanah", 
-        peran: "Analis Kualitas Air", 
+        peran: "Kreatif dan Komunikasi", 
         asal: "Malang", 
         bergabung: "2026", 
         email: "aisyahitsnaini1949@gmail.com", 
-        status: "Laboratorium",
+        status: "Aktif",
         foto: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80",
         linkSertifikat: "#" 
       },
       { 
         nama: "Wardatul Fitriah", 
-        peran: "Surveyor Lapangan", 
+        peran: "Pendidikan dan Inovasi", 
         asal: "Malang", 
         bergabung: "2026", 
         email: "wardafitriah5@gmail.com", 
-        status: "Aktif Lapangan",
+        status: "Aktif",
         foto: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=256&q=80",
         linkSertifikat: "#" 
       },
       { 
         nama: "Nila Rahma Afi Maulidya", 
-        peran: "Edukator Ekologi", 
+        peran: "Pendidikan dan Inovasi", 
         asal: "Malang", 
         bergabung: "2026", 
         email: "rahmanila224@gmail.com", 
-        status: "Aktif Lapangan",
+        status: "Aktif",
         foto: "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=256&q=80",
         linkSertifikat: "#" 
       },
       { 
         nama: "Eka Nur Intania", 
-        peran: "Logistik & Rescue", 
+        peran: "Kreatif dan Komunikasi", 
         asal: "Malang", 
         bergabung: "2026", 
         email: "ekaintaniaa660@gmail.com", 
-        status: "Aktif Lapangan",
+        status: "Aktif",
         foto: "https://images.unsplash.com/photo-1554151228-14d9def656e4?auto=format&fit=crop&w=256&q=80",
         linkSertifikat: "#" 
       },
       { 
         nama: "Putri Ratna Bunga Agustin", 
-        peran: "Fasilitator Komunitas", 
+        peran: "Pendidikan dan Inovasi", 
         asal: "Malang", 
         bergabung: "2026", 
         email: "putriratnabungaa@gmail.com", 
-        status: "Standby Analisis",
+        status: "Aktif",
         foto: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=256&q=80",
         linkSertifikat: "#" 
       },
       { 
         nama: "Hasna Fathina Qurrota'Ayun", 
-        peran: "Analis Kualitas Air", 
+        peran: "Kreatif dan Komunikasi", 
         asal: "Malang", 
         bergabung: "2026", 
         email: "fathinahasna11@gmail.com", 
-        status: "Laboratorium",
+        status: "Aktif",
         foto: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=256&q=80",
         linkSertifikat: "#" 
       },
       { 
         nama: "Anggi Nur Fadilah", 
-        peran: "Surveyor Lapangan", 
+        peran: "Humas dan Kemitraan", 
         asal: "Malang", 
         bergabung: "2026", 
         email: "anggifadlhh@gmail.com", 
-        status: "Aktif Lapangan",
+        status: "Aktif",
         foto: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=256&q=80",
         linkSertifikat: "#" 
       },
       { 
         nama: "QOYYUM FARIDATUN NAJIHAH", 
-        peran: "Edukator Ekologi", 
+        peran: "Pendidikan dan Inovasi", 
         asal: "Malang", 
         bergabung: "2026", 
         email: "yumibuuy23@gmail.com", 
-        status: "Aktif Lapangan",
+        status: "Aktif",
         foto: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=256&q=80",
         linkSertifikat: "#" 
       },
       { 
         nama: "mahardika anugrah", 
-        peran: "Logistik & Rescue", 
+        peran: "pendidikan dan inovasi", 
         asal: "Malang", 
         bergabung: "2026", 
         email: "mahardikaanugrahanugrah@gmail.com", 
-        status: "Aktif Lapangan",
+        status: "Aktif",
         foto: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=256&q=80",
         linkSertifikat: "#" 
       },
       { 
         nama: "muhammad nizam azzamroni", 
-        peran: "Fasilitator Komunitas", 
+        peran: "Humas dan Kemitraan", 
         asal: "Malang", 
         bergabung: "2026", 
         email: "sulaimantulung73@gmail.com", 
-        status: "Standby Analisis",
+        status: "Aktif",
         foto: "https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?auto=format&fit=crop&w=256&q=80",
         linkSertifikat: "#" 
       },
       { 
         nama: "Daim Al Mubarok", 
-        peran: "Analis Kualitas Air", 
+        peran: "Humas dan Kemitraan", 
         asal: "Malang", 
         bergabung: "2026", 
         email: "250605110205@student.uin-malang.ac.id", 
-        status: "Laboratorium",
+        status: "Aktif",
         foto: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=256&q=80",
         linkSertifikat: "#" 
       }
