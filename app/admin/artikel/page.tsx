@@ -68,12 +68,22 @@ export default function AdminArtikel() {
 
   // 🚀 Handler Submit Artikel
   const handlePublish = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!fileGambar) {
-      alert("⚠️ Harap pilih foto sampul artikel terlebih dahulu!");
-      return;
-    }
+  e.preventDefault();
+  
+  if (!fileGambar) {
+    alert("⚠️ Harap pilih foto sampul artikel terlebih dahulu!");
+    return;
+  }
+
+  // 👇 TAMBAHKAN BATASAN UKURAN FILE DI SINI (Misal: Maksimal 2MB)
+  const UKURAN_MAKSIMAL = 2 * 1024 * 1024; // 2 MegaByte
+  if (fileGambar.size > UKURAN_MAKSIMAL) {
+    alert("⚠️ File terlalu besar! Maksimal ukuran gambar adalah 2MB. Silakan kompres foto Anda terlebih dahulu.");
+    return; // Batalkan proses jika over
+  }
+
+  setIsSubmitting(true);
+  // ... sisa kode upload ke storage dan insert database di bawahnya ...
 
     setIsSubmitting(true);
 

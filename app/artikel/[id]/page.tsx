@@ -1,202 +1,185 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
-import { useRouter } from "next/navigation";
 
-export default function AdminLoginPortal() {
+// Interface fleksibel untuk mendukung kolom dari database Anda
+interface Artikel {
+  id: string | number;
+  title?: string;
+  judul?: string;       
+  content?: string;
+  konten?: string;      
+  isi?: string;         
+  intisari?: string;    
+  konten_lengkap?: string; 
+  category?: string;
+  kategori?: string;    
+  author?: string;
+  penulis?: string;     
+  nama_penulis?: string;
+  created_at?: string;
+  image_url?: string;
+  gambar_url?: string;  
+  gambar?: string; // 👈 Tambahan untuk mendukung kolom gambar di Supabase Anda
+  views?: number;  // 👈 Tambahan untuk mendukung kolom views/dibaca
+}
+
+export default function DetailArtikelPublik() {
   const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [pesanError, setPesanError] = useState<string | null>(null);
+  const params = useParams();
+  const id = params?.id; // Mengambil ID dari URL (misal: /artikel/4)
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(false);
-    setPesanError(null);
+  const [artikel, setArtikel] = useState<Artikel | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-    if (!email || !password) {
-      setPesanError("Semua kolom wajib diisi.");
-      return;
-    }
+  useEffect(() => {
+    if (!id) return;
 
-    try {
-      setLoading(true);
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
+    const ambilDetailArtikel = async () => {
+      try {
+        setLoading(true);
+        setError(null);
 
-      if (error) throw error;
+        // Menarik data dari tabel 'artikel'
+        const { data, error: supabaseError } = await supabase
+          .from("artikel") 
+          .select("*")
+          .eq("id", id)
+          .single();
 
-      if (data?.user) {
-        // Jika login berhasil, arahkan ke dashboard manajemen artikel admin
-        router.push("/admin/dashboard");
+        if (supabaseError) throw supabaseError;
+
+        if (data) {
+          setArtikel(data);
+
+          // 📈 KODE BARU: Otomatis tambah views (+1) saat artikel berhasil dibuka
+          const jumlahViewSekarang = data.views || 0;
+          supabase
+            .from("artikel")
+            .update({ views: jumlahViewSekarang + 1 })
+            .eq("id", id)
+            .then(({ error }) => {
+              if (error) console.error("Gagal update views:", error);
+            });
+
+        } else {
+          setError("Artikel tidak ditemukan.");
+        }
+      } catch (err: any) {
+        console.error("Error fetching article:", err);
+        setError(err.message || "Gagal memuat artikel.");
+      } finally {
+        setLoading(false);
       }
-    } catch (error: any) {
-      setPesanError(error.message || "Gagal masuk. Periksa kembali akun Anda.");
-    } finally {
-      setLoading(false);
-    }
-  };
+    };
+
+    ambilDetailArtikel();
+  }, [id]);
 
   const fontStyle = { fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif' };
 
-  return (
-    <div style={{ 
-      ...fontStyle,
-      backgroundColor: "#f4fbf7", 
-      minHeight: "100vh", 
-      display: "flex", 
-      alignItems: "center", 
-      justifyContent: "center",
-      padding: "20px"
-    }}>
-      
-      {/* 🟢 STYLE INJEKSI UNTUK BEHAVIOR INPUT & TOMBOL PERSIS GAMBAR */}
-      <style dangerouslySetInnerHTML={{ __html: `
-        .input-portal {
-          width: 100%;
-          padding: 16px;
-          font-size: 15px;
-          border: 1.5px solid #e2e8f0;
-          border-radius: 12px;
-          background-color: #f8fafc;
-          color: #0f172a;
-          outline: none;
-          transition: all 0.2s ease;
-          box-sizing: border-box;
-        }
-        .input-portal:focus {
-          border-color: #10b981 !important;
-          background-color: #ffffff !important;
-          box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
-        }
-        .tombol-masuk {
-          width: 100%;
-          background-color: #063e2b;
-          color: white;
-          border: none;
-          padding: 16px;
-          font-size: 14px;
-          font-weight: 700;
-          letter-spacing: 1px;
-          border-radius: 12px;
-          cursor: pointer;
-          transition: all 0.3s ease;
-          margin-top: 10px;
-        }
-        .tombol-masuk:hover {
-          background-color: #022c22;
-          transform: translateY(-1px);
-          box-shadow: 0 10px 20px -5px rgba(6, 62, 43, 0.3);
-        }
-        .tombol-masuk:disabled {
-          background-color: #94a3b8;
-          cursor: not-allowed;
-          transform: none;
-          box-shadow: none;
-        }
-        .link-kembali {
-          color: #8da2bb;
-          text-decoration: none;
-          font-size: 13px;
-          font-weight: 600;
-          transition: color 0.2s;
-        }
-        .link-kembali:hover {
-          color: #064e3b;
-        }
-      `}} />
-
-      {/* 🛡️ KARTU PORTAL VERIFIKASI */}
-      <div style={{ 
-        backgroundColor: "#ffffff", 
-        width: "100%", 
-        maxWidth: "460px", 
-        borderRadius: "24px", 
-        padding: "50px 40px", 
-        boxShadow: "0 20px 40px -10px rgba(0, 0, 0, 0.05)",
-        textAlign: "center"
-      }}>
-        
-        {/* Lingkaran Perisai / Badge Proteksi */}
-        <div style={{ 
-          width: "72px", 
-          height: "72px", 
-          backgroundColor: "#d1fae5", 
-          borderRadius: "50%", 
-          display: "flex", 
-          alignItems: "center", 
-          justifyContent: "center", 
-          margin: "0 auto 24px auto"
-        }}>
-          {/* Menggunakan SVG Shield Premium yang Sesuai dengan Gambar image_554f5f.png */}
-          <svg width="32" height="36" viewBox="0 0 24 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 0L2 4V13C2 19.2 6.3 24.9 12 26.5C17.7 24.9 22 19.2 22 13V4L12 0Z" fill="#3b82f6"/>
-          </svg>
+  // ⏳ TAMPILAN LOADING SEMENTARA DATA DIAMBIL
+  if (loading) {
+    return (
+      <div style={{ ...fontStyle, minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: "#f8fafc" }}>
+        <div style={{ textAlign: "center", color: "#063e2b" }}>
+          <div style={{ width: "40px", height: "40px", border: "4px solid #e2e8f0", borderTopColor: "#063e2b", borderRadius: "50%", animation: "spin 1s linear infinite", margin: "0 auto 15px auto" }}></div>
+          <p style={{ fontWeight: "600", fontSize: "15px" }}>Memuat lembar tulisan...</p>
+          <style dangerouslySetInnerHTML={{ __html: `@keyframes spin { to { transform: rotate(360deg); } }` }} />
         </div>
+      </div>
+    );
+  }
 
-        {/* Judul Teks */}
-        <h1 style={{ fontSize: "28px", fontWeight: "800", color: "#063e2b", margin: "0 0 8px 0", letterSpacing: "-0.5px" }}>
-          Portal Verifikasi
-        </h1>
-        <p style={{ fontSize: "14.5px", color: "#70859f", margin: "0 0 35px 0", fontWeight: "500" }}>
-          Silakan masukkan email admin KATI Anda.
-        </p>
-
-        {/* Feedback Error jika ada */}
-        {pesanError && (
-          <div style={{ backgroundColor: "#fef2f2", color: "#991b1b", padding: "12px", borderRadius: "8px", fontSize: "13px", marginBottom: "20px", textAlign: "left", fontWeight: "500", border: "1px solid #fee2e2" }}>
-            ⚠️ {pesanError}
-          </div>
-        )}
-
-        {/* Form Login */}
-        <form onSubmit={handleLogin} style={{ textAlign: "left", display: "flex", flexDirection: "column", gap: "20px" }}>
-          
-          {/* Field Email */}
-          <div>
-            <label style={{ display: "block", fontSize: "12px", fontWeight: "800", color: "#2d3a4a", letterSpacing: "0.5px", marginBottom: "8px" }}>
-              ALAMAT EMAIL
-            </label>
-            <input 
-              type="email" 
-              className="input-portal"
-              placeholder="admin@kati.id"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              disabled={loading}
-            />
-          </div>
-
-          {/* Field Password */}
-          <div>
-            <label style={{ display: "block", fontSize: "12px", fontWeight: "800", color: "#2d3a4a", letterSpacing: "0.5px", marginBottom: "8px" }}>
-              KATA SANDI
-            </label>
-            <input 
-              type="password" 
-              className="input-portal"
-              placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              disabled={loading}
-            />
-          </div>
-
-          {/* Tombol Aksi */}
-          <button type="submit" className="tombol-masuk" disabled={loading}>
-            {loading ? "MEMPROSES..." : "MASUK KE SISTEM"}
+  // ❌ TAMPILAN JIKA ARTIKEL TIDAK KETEMU / ERROR
+  if (error || !artikel) {
+    return (
+      <div style={{ ...fontStyle, minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: "#f8fafc", padding: "20px" }}>
+        <div style={{ backgroundColor: "#ffffff", padding: "40px", borderRadius: "20px", maxWidth: "400px", width: "100%", textAlign: "center", boxShadow: "0 10px 25px rgba(0,0,0,0.02)" }}>
+          <span style={{ fontSize: "40px" }}>🍂</span>
+          <h2 style={{ color: "#063e2b", fontSize: "20px", fontWeight: "700", marginTop: "15px" }}>Buku Catatan Kosong</h2>
+          <p style={{ color: "#64748b", fontSize: "14px", marginTop: "8px", marginBottom: "25px" }}>{error || "Artikel tidak berhasil ditemukan di sistem."}</p>
+          <button onClick={() => router.push("/artikel")} style={{ backgroundColor: "#063e2b", color: "white", border: "none", padding: "12px 24px", borderRadius: "10px", fontWeight: "600", cursor: "pointer", width: "100%" }}>
+            Kembali ke List Artikel
           </button>
-        </form>
+        </div>
+      </div>
+    );
+  }
 
-        {/* Opsi Kembali */}
-        <div style={{ marginTop: "35px" }}>
-          <a href="/artikel" className="link-kembali">
-            ← Kembali ke Beranda Utama
-          </a>
+  // Ambil data gambar, judul, konten secara dinamis dengan prioritas kolom Supabase Anda
+  const judulArtikel = artikel.judul || artikel.title || "Judul Tidak Tersedia";
+  const kontenArtikel = artikel.konten_lengkap || artikel.konten || artikel.isi || artikel.content || artikel.intisari || "Konten artikel belum diisi.";
+  const kategoriArtikel = artikel.kategori || artikel.category || "Sudut Teduh";
+  const penulisArtikel = artikel.nama_penulis || artikel.penulis || artikel.author || "Tim Kampus Alam";
+  
+  // 📸 KODE BARU: Mengutamakan kolom 'gambar' dari tabel Supabase Anda
+  const urlGambar = artikel.gambar || artikel.image_url || artikel.gambar_url;
+
+  // 📖 TAMPILAN MEMBACA ARTIKEL (PREMIUM & CLEAN STYLE)
+  return (
+    <div style={{ ...fontStyle, backgroundColor: "#f4fbf7", minHeight: "100vh", padding: "40px 20px" }}>
+      <div style={{ maxWidth: "800px", margin: "0 auto" }}>
+        
+        {/* Tombol Kembali yang Estetik */}
+        <button 
+          onClick={() => router.push("/artikel")} 
+          style={{ background: "none", border: "none", color: "#063e2b", fontSize: "14px", fontWeight: "600", cursor: "pointer", display: "flex", alignItems: "center", gap: "8px", marginBottom: "30px", padding: 0 }}
+        >
+          ← Kembali ke Jurnal Utama
+        </button>
+
+        {/* Kontainer Utama Artikel */}
+        <article style={{ backgroundColor: "#ffffff", borderRadius: "24px", padding: "50px 40px", boxShadow: "0 20px 40px -10px rgba(0, 0, 0, 0.02)" }}>
+          
+          {/* Tag Kategori & Tanggal */}
+          <div style={{ display: "flex", gap: "12px", alignItems: "center", marginBottom: "20px" }}>
+            <span style={{ backgroundColor: "#d1fae5", color: "#063e2b", fontSize: "12px", fontWeight: "700", padding: "6px 14px", borderRadius: "100px", textTransform: "uppercase", letterSpacing: "0.5px" }}>
+              {kategoriArtikel}
+            </span>
+            <span style={{ color: "#94a3b8", fontSize: "13px", fontWeight: "500" }}>
+              {artikel.created_at ? new Date(artikel.created_at).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" }) : "Baru Saja"}
+            </span>
+          </div>
+
+          {/* Judul Utama Artikel */}
+          <h1 style={{ fontSize: "36px", fontWeight: "800", color: "#063e2b", lineHeight: "1.3", margin: "0 0 15px 0", letterSpacing: "-0.5px" }}>
+            {judulArtikel}
+          </h1>
+
+          {/* Nama Penulis */}
+          <p style={{ fontSize: "14px", color: "#64748b", fontWeight: "500", margin: "0 0 40px 0", borderBottom: "1px solid #f1f5f9", paddingBottom: "20px" }}>
+            Ditulis oleh: <span style={{ color: "#063e2b", fontWeight: "600" }}>{penulisArtikel}</span>
+          </p>
+
+          {/* Ilustrasi Gambar (Jika Ada) */}
+          {urlGambar && (
+            <img 
+              src={urlGambar} 
+              alt={judulArtikel} 
+              style={{ width: "100%", height: "auto", maxHeight: "400px", objectFit: "cover", borderRadius: "16px", marginBottom: "40px" }}
+            />
+          )}
+
+          {/* Isi Konten Artikel (Mendukung Spasi Paragraf) */}
+          <div style={{ 
+            fontSize: "17px", 
+            color: "#334155", 
+            lineHeight: "1.8", 
+            whiteSpace: "pre-wrap", // Menjaga enter/paragraf agar tidak menyatu
+            letterSpacing: "0.2px"
+          }}>
+            {kontenArtikel}
+          </div>
+
+        </article>
+
+        {/* Footer Kecil Halaman Pembaca */}
+        <div style={{ textTransform: "none", textAlign: "center", marginTop: "40px", color: "#94a3b8", fontSize: "13px", fontWeight: "500" }}>
+          © 2026 Kampus Alam Tegalsari Indonesia. Seluruh hak cipta dilindungi.
         </div>
 
       </div>
