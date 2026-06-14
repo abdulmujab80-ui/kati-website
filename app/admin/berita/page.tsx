@@ -1,193 +1,265 @@
 "use client";
 
-import { useState } from "react";
-import { supabase } from "@/lib/supabase"; 
+import { useState, useEffect } from "react";
+import { createClient } from "@supabase/supabase-js";
+import Link from "next/link";
 
-// DAFTAR EMAIL YANG DIIZINKAN MASUK
-const EMAIL_TIM_KATI = [
-  "abdulmujab80@gmail.com",
-  "penulis@kati.id",
-  "editor@kampusalam.com"
-];
+// Inisialisasi Supabase
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-export default function AdminBerita() {
-  // STATE UNTUK GERBANG LOGIN
-  const [isVerified, setIsVerified] = useState(false);
-  const [emailInput, setEmailInput] = useState("");
+const daftarKategori = ["Kabar Pendopo", "Edukasi", "Konservasi", "Riset", "Pengabdian", "Ekowisata"];
 
-  // STATE UNTUK FORM BERITA
+export default function AdminBeritaPage() {
+  // ==========================================
+  // STATE UNTUK PORTAL EMAIL (LOGIN)
+  // ==========================================
+  const [session, setSession] = useState<any>(null);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [authLoading, setAuthLoading] = useState(false);
+  const [authError, setAuthError] = useState("");
+
+  // ==========================================
+  // STATE UNTUK FORM BERITA & UPLOAD GAMBAR
+  // ==========================================
   const [judul, setJudul] = useState("");
-  const [kategori, setKategori] = useState("KEGIATAN");
-  const [konten_lengkap, setKontenLengkap] = useState("");
-  const [fileGambar, setFileGambar] = useState<File | null>(null); 
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [penulis, setPenulis] = useState("");
+  const [kategori, setKategori] = useState(daftarKategori[0]);
+  const [kontenLengkap, setKontenLengkap] = useState("");
+  const [fileGambar, setFileGambar] = useState<File | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState({ text: "", type: "" });
 
-  // FUNGSI CEK EMAIL
-  const handleVerifikasi = (e: React.FormEvent) => {
+  // CEK SESSION SAAT HALAMAN DIBUKA
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => setSession(session));
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => setSession(session));
+    return () => subscription.unsubscribe();
+  }, []);
+
+  // FUNGSI UNTUK LOGIN (PORTAL EMAIL)
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (EMAIL_TIM_KATI.includes(emailInput.toLowerCase())) {
-      setIsVerified(true);
-    } else {
-      alert("❌ Akses ditolak: Email tidak terdaftar sebagai Penulis KATI.");
+    setAuthLoading(true);
+    setAuthError("");
+    try {
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) throw error;
+    } catch (error: any) {
+      setAuthError("Email atau Password salah. Pastikan akun sudah terdaftar di Supabase.");
+    } finally {
+      setAuthLoading(false);
     }
   };
 
-  // FUNGSI PUBLISH BERITA
-  const handlePublish = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!fileGambar) {
-      alert("⚠️ Harap pilih gambar terlebih dahulu!");
-      return;
-    }
+  // FUNGSI UNTUK LOGOUT
+  const handleLogout = async () => await supabase.auth.signOut();
 
-    setIsSubmitting(true);
+  // FUNGSI UNTUK UPLOAD BERITA & GAMBAR
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setMessage({ text: "", type: "" });
 
     try {
-      const fileExt = fileGambar.name.split('.').pop();
-      const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
+      let finalImageUrl = "";
+
+      // 1. PROSES UPLOAD GAMBAR KE BUCKET 'gambar-berita'
+      if (fileGambar) {
+        const fileExt = fileGambar.name.split('.').pop();
+        const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
+        const filePath = `covers/${fileName}`;
+
+        const { error: uploadError } = await supabase.storage
+          .from('gambar-berita')
+          .upload(filePath, fileGambar);
+
+        if (uploadError) throw uploadError;
+
+        const { data: publicUrlData } = supabase.storage
+          .from('gambar-berita')
+          .getPublicUrl(filePath);
+
+        finalImageUrl = publicUrlData.publicUrl;
+      }
+
+      // 2. INSERT DATA KE TABEL BERITA
+      const { error } = await supabase.from("berita").insert([
+        { 
+          judul, 
+          penulis, 
+          kategori, 
+          konten_lengkap: kontenLengkap, 
+          gambar: finalImageUrl 
+        },
+      ]);
       
-      const { error: uploadError } = await supabase.storage
-        .from("gambar-berita")
-        .upload(fileName, fileGambar);
+      if (error) throw error;
 
-      if (uploadError) throw uploadError;
-
-      const { data: publicUrlData } = supabase.storage
-        .from("gambar-berita")
-        .getPublicUrl(fileName);
-        
-      const imageUrl = publicUrlData.publicUrl;
-
-      // Menyimpan ke database tanpa kolom deskripsi
-      const { error: dbError } = await supabase
-        .from("berita")
-        .insert([
-          { 
-            judul: judul, 
-            kategori: kategori, 
-            konten_lengkap: konten_lengkap, 
-            gambar: imageUrl 
-          }
-        ]);
-
-      if (dbError) throw dbError;
-
-      alert("✅ Berhasil! Berita beserta gambar sudah tayang.");
+      setMessage({ text: "🎉 Berita & Gambar berhasil diterbitkan!", type: "success" });
       
-      setJudul("");
-      setKontenLengkap("");
+      // KOSONGKAN FORM SETELAH BERHASIL
+      setJudul(""); setPenulis(""); setKategori(daftarKategori[0]); setKontenLengkap(""); 
       setFileGambar(null);
-      const fileInput = document.getElementById("input-gambar") as HTMLInputElement;
+      const fileInput = document.getElementById('file-upload') as HTMLInputElement;
       if (fileInput) fileInput.value = "";
 
     } catch (error: any) {
-      alert("❌ Terjadi kesalahan: " + error.message);
-      console.error(error);
+      setMessage({ text: `❌ Gagal: ${error.message}`, type: "error" });
     } finally {
-      setIsSubmitting(false);
+      setLoading(false);
     }
   };
 
-  // 1. TAMPILAN JIKA BELUM VERIFIKASI (GERBANG PENULIS)
-  if (!isVerified) {
+  // ==========================================
+  // TAMPILAN 1: PORTAL LOGIN EMAIL (JIKA BELUM LOGIN)
+  // ==========================================
+  if (!session) {
     return (
-      <div style={{ minHeight: "80vh", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "#f8fafc", padding: "20px" }}>
-        <div style={{ backgroundColor: "white", padding: "40px", borderRadius: "16px", boxShadow: "0 10px 15px -3px rgba(0,0,0,0.1)", maxWidth: "400px", width: "100%", textAlign: "center" }}>
-          <h2 style={{ color: "#064e3b", marginBottom: "12px", fontSize: "24px", fontWeight: "700" }}>Gerbang Jurnalis KATI</h2>
-          <p style={{ color: "#64748b", fontSize: "14px", marginBottom: "30px", lineHeight: "1.5" }}>
-            Halaman ini dilindungi. Masukkan email resmi Anda untuk membuka akses menulis.
-          </p>
+      <div className="min-h-screen bg-[#f4fdf8] flex flex-col items-center justify-center px-4 font-sans relative overflow-hidden">
+        {/* Dekorasi Background */}
+        <div className="absolute top-[-10%] left-[-10%] w-96 h-96 bg-emerald-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
+        <div className="absolute bottom-[-10%] right-[-10%] w-96 h-96 bg-teal-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
 
-          <form onSubmit={handleVerifikasi}>
-            <input 
-              type="email"
-              placeholder="Masukkan email Anda..." 
-              value={emailInput}
-              onChange={(e) => setEmailInput(e.target.value)}
-              required
-              style={{ width: "100%", padding: "12px 16px", borderRadius: "8px", border: "1px solid #cbd5e1", marginBottom: "20px", boxSizing: "border-box", fontSize: "14px" }}
-            />
+        <div className="w-full max-w-md bg-white p-10 rounded-2xl shadow-xl border border-emerald-50 relative z-10">
+          <div className="text-center mb-8">
+            <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4 shadow-inner">
+              <span className="text-3xl">🛡️</span>
+            </div>
+            <h1 className="text-2xl font-black text-[#053e2f] tracking-tight">Portal Verifikasi</h1>
+            <p className="text-sm text-slate-500 mt-2 font-medium">Silakan masukkan email admin KATI Anda.</p>
+          </div>
+
+          {authError && (
+            <div className="mb-6 p-3 bg-red-50 text-red-600 text-xs font-bold rounded-lg border border-red-100 text-center">
+              {authError}
+            </div>
+          )}
+
+          <form onSubmit={handleLogin} className="space-y-5">
+            <div>
+              <label className="block text-xs font-black text-slate-700 uppercase mb-2 tracking-wider">Alamat Email</label>
+              <input 
+                type="email" 
+                required 
+                placeholder="admin@kati.id"
+                value={email} 
+                onChange={(e) => setEmail(e.target.value)} 
+                className="w-full p-3.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-slate-50 focus:bg-white transition-all" 
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-black text-slate-700 uppercase mb-2 tracking-wider">Kata Sandi</label>
+              <input 
+                type="password" 
+                required 
+                placeholder="••••••••"
+                value={password} 
+                onChange={(e) => setPassword(e.target.value)} 
+                className="w-full p-3.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-slate-50 focus:bg-white transition-all" 
+              />
+            </div>
             <button 
-              type="submit"
-              style={{ width: "100%", backgroundColor: "#064e3b", color: "white", padding: "12px", borderRadius: "8px", border: "none", fontWeight: "bold", fontSize: "15px", cursor: "pointer" }}
+              type="submit" 
+              disabled={authLoading} 
+              className={`w-full py-4 rounded-xl text-sm font-black uppercase tracking-widest transition-all shadow-md mt-2 ${
+                authLoading ? "bg-slate-300 text-slate-500" : "bg-[#053e2f] hover:bg-[#10b981] text-white hover:shadow-lg hover:-translate-y-0.5"
+              }`}
             >
-              Verifikasi Email
+              {authLoading ? "Membuka Portal..." : "Masuk ke Sistem"}
             </button>
           </form>
+          
+          <div className="mt-8 text-center">
+             <Link href="/" className="text-xs font-bold text-slate-400 hover:text-emerald-600 transition-colors">
+               &larr; Kembali ke Beranda Utama
+             </Link>
+          </div>
         </div>
       </div>
     );
   }
 
-  // 2. TAMPILAN JIKA SUDAH VERIFIKASI (DAPUR PENULIS)
+  // ==========================================
+  // TAMPILAN 2: FORM UPLOAD BERITA (JIKA SUDAH LOGIN)
+  // ==========================================
   return (
-    <div style={{ maxWidth: "600px", margin: "40px auto", padding: "30px", backgroundColor: "#f8fafc", borderRadius: "12px", border: "1px solid #e2e8f0" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
-        <h2 style={{ color: "#064e3b", margin: 0 }}>Dapur Penulis: Tambah Berita</h2>
-        <button 
-          onClick={() => setIsVerified(false)} 
-          style={{ backgroundColor: "#ef4444", color: "white", border: "none", padding: "6px 12px", borderRadius: "6px", fontSize: "12px", cursor: "pointer" }}
-        >
-          Keluar
-        </button>
-      </div>
-      
-      <form onSubmit={handlePublish} style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
-        <input 
-          placeholder="Judul Berita" 
-          value={judul} 
-          onChange={(e) => setJudul(e.target.value)}
-          required
-          style={{ padding: "10px", borderRadius: "6px", border: "1px solid #cbd5e1" }}
-        />
+    <div className="min-h-screen bg-[#f8fafc] py-10 px-4 flex justify-center font-sans">
+      <div className="w-full max-w-3xl bg-white p-8 rounded-xl shadow-sm border border-slate-200">
         
-        <select value={kategori} onChange={(e) => setKategori(e.target.value)} style={{ padding: "10px", borderRadius: "6px", border: "1px solid #cbd5e1" }}>
-          <option value="KEGIATAN">KEGIATAN</option>
-          <option value="EDUKASI">EDUKASI</option>
-          <option value="KONSERVASI">KONSERVASI</option>
-        </select>
-
-        <div style={{ padding: "10px", borderRadius: "6px", border: "1px dashed #64748b", backgroundColor: "white" }}>
-          <label style={{ display: "block", marginBottom: "8px", fontSize: "14px", color: "#475569", fontWeight: "bold" }}>
-            Upload Foto Berita:
-          </label>
-          <input 
-            id="input-gambar"
-            type="file" 
-            accept="image/*"
-            onChange={(e) => setFileGambar(e.target.files?.[0] || null)}
-            required
-            style={{ width: "100%", cursor: "pointer" }}
-          />
+        {/* Header Admin Terverifikasi */}
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 pb-6 border-b border-slate-200 gap-4">
+          <div>
+            <h1 className="text-2xl font-black text-[#053e2f] tracking-tight">Panel Admin: Portal Berita</h1>
+            <p className="text-xs text-emerald-600 mt-1 font-bold flex items-center gap-1.5 bg-emerald-50 inline-block px-2 py-1 rounded-md">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse inline-block"></span>
+              Akses Email: {session.user.email}
+            </p>
+          </div>
+          <div className="flex gap-2 w-full md:w-auto">
+            <button onClick={handleLogout} className="flex-1 md:flex-none text-xs font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 px-4 py-2.5 rounded-lg transition-colors border border-slate-200">
+              Keluar (Logout)
+            </button>
+            <Link href="/berita" className="flex-1 md:flex-none text-center text-xs font-bold text-white bg-red-500 hover:bg-red-600 px-4 py-2.5 rounded-lg transition-colors shadow-sm">
+              Lihat Portal 📰
+            </Link>
+          </div>
         </div>
 
-        {/* Kolom ringkasan deskripsi singkat berhasil dihapus dari sini */}
+        {message.text && (
+          <div className={`p-4 mb-6 rounded-lg text-sm font-bold border ${message.type === "success" ? "bg-emerald-50 text-emerald-700 border-emerald-200" : "bg-red-50 text-red-700 border-red-200"}`}>
+            {message.text}
+          </div>
+        )}
 
-        <textarea 
-          placeholder="Isi Konten Lengkap" 
-          value={konten_lengkap} 
-          onChange={(e) => setKontenLengkap(e.target.value)}
-          required
-          style={{ padding: "10px", borderRadius: "6px", height: "150px", border: "1px solid #cbd5e1" }}
-        />
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div>
+            <label className="block text-xs font-black text-slate-700 uppercase mb-2 tracking-wider">Judul Berita</label>
+            <input type="text" required value={judul} onChange={(e) => setJudul(e.target.value)} className="w-full p-3 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none" />
+          </div>
+          
+          <div>
+            <label className="block text-xs font-black text-slate-700 uppercase mb-2 tracking-wider">Penulis / Redaksi</label>
+            <input type="text" required value={penulis} onChange={(e) => setPenulis(e.target.value)} className="w-full p-3 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none" />
+          </div>
 
-        <button 
-          type="submit" 
-          disabled={isSubmitting}
-          style={{ 
-            backgroundColor: isSubmitting ? "#94a3b8" : "#16a34a", 
-            color: "white", 
-            padding: "12px", 
-            borderRadius: "6px", 
-            border: "none", 
-            cursor: isSubmitting ? "not-allowed" : "pointer", 
-            fontWeight: "bold" 
-          }}
-        >
-          {isSubmitting ? "Mengunggah & Mempublish..." : "Publish ke Publik"}
-        </button>
-      </form>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-xs font-black text-slate-700 uppercase mb-2 tracking-wider">Kategori Spesifik</label>
+              <select value={kategori} onChange={(e) => setKategori(e.target.value)} className="w-full p-3 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                {daftarKategori.map((kat) => <option key={kat} value={kat}>{kat}</option>)}
+              </select>
+            </div>
+            
+            <div>
+              <label className="block text-xs font-black text-slate-700 uppercase mb-2 tracking-wider">Upload Cover Gambar</label>
+              <input 
+                id="file-upload"
+                type="file" 
+                accept="image/*"
+                required
+                onChange={(e) => {
+                  if (e.target.files && e.target.files.length > 0) {
+                    setFileGambar(e.target.files[0]);
+                  }
+                }}
+                className="w-full p-2 border border-slate-300 rounded-lg text-sm bg-slate-50 focus:bg-white file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-xs file:font-bold file:bg-[#053e2f] file:text-white hover:file:bg-[#10b981] transition cursor-pointer"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-xs font-black text-slate-700 uppercase mb-2 tracking-wider">Konten Lengkap Berita</label>
+            <textarea required rows={8} value={kontenLengkap} onChange={(e) => setKontenLengkap(e.target.value)} className="w-full p-3 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none leading-relaxed"></textarea>
+          </div>
+          
+          <button type="submit" disabled={loading} className={`w-full py-4 rounded-xl text-sm font-black tracking-widest uppercase transition-all shadow-md ${loading ? "bg-slate-400 text-white" : "bg-[#053e2f] hover:bg-[#10b981] text-white hover:-translate-y-0.5 hover:shadow-lg"}`}>
+            {loading ? "Mengupload Data & Gambar..." : "🚀 Terbitkan Berita Sekarang"}
+          </button>
+        </form>
+      </div>
     </div>
   );
 }
