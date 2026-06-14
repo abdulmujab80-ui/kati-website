@@ -60,22 +60,22 @@ export default function Home() {
   const daftarSpanduk = [
     {
       judul: "Selamat Datang di Kampus Alam Tegalsari Indonesia",
-      subJudul: "🌿 Pusat Pergerakan & Edukasi Hijau",
-      teks: "Tempat terbaik untuk belajar, bertumbuh, dan bersinergi dengan alam demi masa depan bumi yang berkelanjutan.",
+      subJudul: "🌿 Alam adalah Kelas, Masyarakat adalah Nafas.",
+      teks: "Rumah kembali bagi jiwa yang rindu belajar pada alam, bertumbuh bersama masyarakat, dan bergerak nyata untuk memulihkan masa depan bumi.",
       warnaAwal: "#064e3b",
       warnaAkhir: "#022c22",
     },
     {
-      judul: "Menjaga Bumi, Membangun Generasi",
-      subJudul: "🌳 Aksi Nyata, Bukan Sekadar Teori",
-      teks: "Mari bergabung bersama komunitas KATI untuk mengasah kepekaan dan menciptakan inovasi ramah lingkungan.",
+      judul: "Mendengar Kidung Semesta, Merawat Labirin Kehidupan",
+      subJudul: "🌳 Kembali ke Akar, Bergerak untuk Bumi.",
+      teks: "Menemukan kembali koordinat manusia di dalam jaring penciptaan: berguru pada sunyi, bergerak dalam aksi, memulihkan bumi.",
       warnaAwal: "#047857",
       warnaAkhir: "#064e3b",
     },
     {
       judul: "Edukasi Alam Berbasis Digitalisasi",
       subJudul: "🔬 Modern, Transparan, & Berdampak",
-      teks: "Jelajahi program Kelas Alam dan Ekowisata terintegrasi yang dirancang untuk melahirkan generasi berbudaya.",
+      teks: "Jelajahi program Kelas Alam dan Ekowisata terintegrasi yang dirancang untuk melahirkan generasi peduli lingkungan.",
       warnaAwal: "#0f766e",
       warnaAkhir: "#115e59",
     },
@@ -251,7 +251,7 @@ export default function Home() {
             </h2>
             <div style={{ width: "60px", height: "5px", backgroundColor: "#10b981", margin: "0 auto 35px auto", borderRadius: "10px" }}></div>
             <p style={{ color: "#475569", fontSize: "18.5px", lineHeight: "1.95", fontWeight: "400", textAlign: "center", maxWidth: "900px", margin: "0 auto" }}>
-              <strong style={{ color: "#064e3b", fontWeight: "700" }}>Kampus Alam Tegalsari Indonesia (KATI)</strong> hadir sebagai episentrum edukasi dan aksi pelestarian lingkungan hidup terpadu. Kami bergerak secara sinergis mempertemukan dunia riset modern dengan kearifan lokal, guna melahirkan inovasi sirkular yang inklusif demi kelangsungan ekosistem masa depan bumi.
+              <strong style={{ color: "#064e3b", fontWeight: "700" }}>Kampus Alam Tegalsari Indonesia (KATI)</strong> adalah lembaga pendidikan non-formal berbasis konservasi alam di bawah Yayasan Pendidikan Sosial Tegalsari Sejahtera, Desa Sidodadi, Malang. KATI hadir sebagai “kampus tanpa dinding” yang menjadikan alam sebagai ruang belajar, masyarakat sebagai dosen, dan tantangan lokal sebagai laboratorium. KATI berfokus pada tridarma: pendidikan, penelitian, dan pengabdian, dengan visi menjadi pusat rujukan nasional pendidikan konservasi berbasis alam, budaya, dan teknologi.
             </p>
           </div>
         </ElemenAnimasiScroll>
@@ -270,7 +270,7 @@ export default function Home() {
                   </div>
                   <h3 style={{ color: "#064e3b", fontSize: "26px", fontWeight: "800", marginBottom: "18px", marginTop: 0, letterSpacing: "-0.5px" }}>Visi Utama</h3>
                   <p style={{ color: "#334155", fontSize: "17px", lineHeight: "1.85", fontWeight: "500", fontStyle: "italic", margin: 0 }}>
-                    "Menjadi pusat pergerakan, penelitian, serta edukasi alam berbasis konservasi terapan yang mandiri, berakar pada keluhuran budaya, serta mampu memberikan impak positif berkelanjutan berskala global."
+                    "Menjadi pusat pendidikan konservasi berbasis alam, budaya, dan teknologi yang melahirkan generasi berkesadaran ekologis, berakar pada kearifan budaya, dan berdaya cipta dalam membangun peradaban berkelanjutan."
                   </p>
                 </div>
                 <div style={{ height: "5px", width: "50px", backgroundColor: "#10b981", marginTop: "40px", borderRadius: "10px" }}></div>
@@ -288,10 +288,11 @@ export default function Home() {
                 
                 <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
                   {[
-                    "Menyelenggarakan tata sistem pendidikan inklusif berbasis konservasi terpadu.",
-                    "Menginisiasi restorasi masif ekosistem mikro vegetasi hutan lokal.",
-                    "Mengakselerasi ekonomi hijau warga via klaster UMKM kreatif ramah lingkungan.",
-                    "Membangun instrumen riset digital iklim terapan yang solutif bagi tantangan global.",
+                    "Menyelenggarakan pendidikan konservasi alam berbasis pengalaman langsung (experiential learning).",
+                    "Mengembangkan riset lapangan yang aplikatif dan berkontribusi pada pembangunan berkelanjutan.",
+                    "Menggerakkan pengabdian masyarakat melalui aksi konservasi yang terukur dan regeneratif.",
+                    "Mencetak kader pemimpin muda desa yang berkarakter, peduli lingkungan, dan berdaya saing global.",
+                    "Membangun jejaring kemitraan dengan kampus, pemerintah, komunitas, dan dunia usaha untuk mendukung konservasi.",
                   ].map((misi, index) => (
                     <div key={index} style={{ display: "flex", gap: "16px", alignItems: "flex-start" }}>
                       <span

@@ -18,6 +18,7 @@ export default function RootLayout({
     { nama: "Program", url: "/program" },
     { nama: "Berita", url: "/berita" },
     { nama: "Artikel", url: "/artikel" },
+    { nama: "Repository", url: "/repository" },
     { nama: "Volunteer", url: "/volunteer" },
     { nama: "Mitra", url: "/mitra" },
   ];
@@ -223,10 +224,10 @@ export default function RootLayout({
               <div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px' }}>
                   <img src="/logo-kati.png" alt="Logo KATI" style={{ width: '32px', height: '32px', objectFit: 'contain' }} />
-                  <span style={{ color: 'white', fontWeight: '800', fontSize: '16px' }}>KATI INDONESIA</span>
+                  <span style={{ color: 'white', fontWeight: '800', fontSize: '16px' }}>KATI</span>
                 </div>
                 <p style={{ fontSize: '13.5px', lineHeight: '1.7', color: '#64748b' }}>
-                  Kampus Alam Tegalsari Indonesia membangun pusat edukasi terpadu, gerakan restorasi nyata, serta kolaborasi hijau multi-sektor demi masa depan bumi yang berkelanjutan.
+                  Menjadi pusat pendidikan konservasi berbasis alam, budaya, dan teknologi yang melahirkan generasi berkesadaran ekologis, berakar pada kearifan budaya, dan berdaya cipta dalam membangun peradaban berkelanjutan.
                 </p>
               </div>
 
@@ -243,8 +244,8 @@ export default function RootLayout({
               <div>
                 <h4 style={{ color: '#ffffff', fontSize: '13px', fontWeight: '700', marginBottom: '20px', textTransform: 'uppercase', letterSpacing: '1px' }}>Sekretariat Pusat</h4>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '13.5px' }}>
-                  <p style={{ margin: 0, color: '#cbd5e1' }}>📍 Kawasan Pusat Konservasi Hijau Tegalsari, Malang, Jawa Timur</p>
-                  <p style={{ margin: 0, color: '#cbd5e1' }}>📞 +62 858-5072-9957</p>
+                  <p style={{ margin: 0, color: '#cbd5e1' }}>📍 Dusun Umbulrejo RT 14 RW 05, Desa Sidodadi, kecamatan Gedangan, Kabupaten Malang, Jawa Timur</p>
+                  <p style={{ margin: 0, color: '#cbd5e1' }}>📞 +62 813-3686-7676 (Faradis)</p>
                 </div>
               </div>
             </div>
