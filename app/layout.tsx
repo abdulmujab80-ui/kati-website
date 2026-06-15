@@ -28,6 +28,19 @@ export default function RootLayout({
       <head>
         {/* ⚡ KUNCI UTAMA: Biar seluruh tampilan website otomatis mengecil & pas di HP */}
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+        
+        {/* 🔍 STRUKTUR DATA GOOGLE: Mengubah nama kampusalam.com menjadi Nama Resmi di Google Search */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              "name": "Kampus Alam Tegalsari Indonesia (KATI)",
+              "url": "https://kampusalam.com"
+            })
+          }}
+        />
       </head>
       <body style={{
         margin: 0,
@@ -154,7 +167,7 @@ export default function RootLayout({
             </div>
           </a>
 
-          {/* TOMBOL HAMBURGER (Hanya muncul di HP seperti contoh foto) */}
+          {/* TOMBOL HAMBURGER */}
           <button 
             className="tombol-hamburger"
             onClick={() => setMenuTerbuka(!menuTerbuka)}
@@ -227,7 +240,7 @@ export default function RootLayout({
                   <span style={{ color: 'white', fontWeight: '800', fontSize: '16px' }}>KATI</span>
                 </div>
                 <p style={{ fontSize: '13.5px', lineHeight: '1.7', color: '#64748b' }}>
-                  Menjadi pusat pendidikan konservasi berbasis alam, budaya, dan teknologi yang melahirkan generasi berkesadaran ekologis, berakar pada kearifan budaya, dan berdaya cipta dalam membangun peradaban berkelanjutan.
+                  Menjadi pusat pendidikan konservasi berbasis alam, budaya, dan teknologi yang melahirkan generasi berkesadaran ekologis, berakar pada kearifan budaya, and berdaya cipta dalam membangun peradaban berkelanjutan.
                 </p>
               </div>
 
