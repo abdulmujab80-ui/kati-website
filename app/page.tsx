@@ -199,21 +199,21 @@ export default function Home() {
   const daftarSpanduk = [
     {
       judul: "Selamat Datang di Kampus Alam Tegalsari Indonesia",
-      subJudul: "🌿 Alam adalah Kelas, Masyarakat adalah Nafas.",
+      subJudul: "Alam adalah Kelas, Masyarakat adalah Nafas.",
       teks: "Rumah kembali bagi jiwa yang rindu belajar pada alam, bertumbuh bersama masyarakat, dan bergerak nyata untuk memulihkan masa depan bumi.",
       warnaAwal: "#064e3b",
       warnaAkhir: "#022c22",
     },
     {
       judul: "Mendengar Kidung Semesta, Merawat Labirin Kehidupan",
-      subJudul: "🌳 Kembali ke Akar, Bergerak untuk Bumi.",
+      subJudul: "Kembali ke Akar, Bergerak untuk Bumi.",
       teks: "Menemukan kembali koordinat manusia di dalam jaring penciptaan: berguru pada sunyi, bergerak dalam aksi, memulihkan bumi.",
       warnaAwal: "#047857",
       warnaAkhir: "#064e3b",
     },
     {
       judul: "Edukasi Alam Berbasis Digitalisasi",
-      subJudul: "🔬 Modern, Transparan, & Berdampak",
+      subJudul: "Modern, Transparan, & Berdampak",
       teks: "Jelajahi program Kelas Alam dan Ekowisata terintegrasi yang dirancang untuk melahirkan generasi peduli lingkungan.",
       warnaAwal: "#0f766e",
       warnaAkhir: "#115e59",
@@ -344,7 +344,7 @@ export default function Home() {
         <ElemenAnimasiScroll>
           <div className="blok-mengenal">
             <span style={{ color: "#10b981", fontWeight: "700", letterSpacing: "2.5px", fontSize: "11px", textTransform: "uppercase", display: "block", textAlign: "center", marginBottom: "12px" }}>
-              MANIFES KAMPUS HIJAU
+              MANIFES KAMPUS ALAM TEGALSARI INDONESIA
             </span>
             <h2 style={{ color: "#064e3b", fontSize: "38px", fontWeight: "800", marginBottom: "25px", letterSpacing: "-1px", marginTop: 0, textAlign: "center" }}>
               Mengenal Gerakan KATI
@@ -365,9 +365,6 @@ export default function Home() {
             <ElemenAnimasiScroll>
               <div className="card-visi-misi" style={{ height: "100%", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
                 <div>
-                  <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "64px", height: "64px", backgroundColor: "#e6f4ea", borderRadius: "20px", marginBottom: "30px" }}>
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#059669" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                  </div>
                   <h3 style={{ color: "#064e3b", fontSize: "26px", fontWeight: "800", marginBottom: "18px", marginTop: 0, letterSpacing: "-0.5px" }}>Visi Utama</h3>
                   <p style={{ color: "#334155", fontSize: "17px", lineHeight: "1.85", fontWeight: "500", fontStyle: "italic", margin: 0 }}>
                     "Menjadi pusat pendidikan konservasi berbasis alam, budaya, dan teknologi yang melahirkan generasi berkesadaran ekologis, berakar pada kearifan budaya, dan berdaya cipta dalam membangun peradaban berkelanjutan."
@@ -381,9 +378,6 @@ export default function Home() {
           <div style={{ flex: "1.2 1 500px", display: "flex" }}>
             <ElemenAnimasiScroll delay="150ms">
               <div className="card-visi-misi" style={{ height: "100%" }}>
-                <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "64px", height: "64px", backgroundColor: "#e0f2f1", borderRadius: "20px", marginBottom: "30px" }}>
-                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0d9488" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
-                </div>
                 <h3 style={{ color: "#064e3b", fontSize: "26px", fontWeight: "800", marginBottom: "22px", marginTop: 0, letterSpacing: "-0.5px" }}>Misi Gerakan</h3>
                 
                 <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
@@ -443,33 +437,24 @@ export default function Home() {
             {/* Kartu 1 */}
             <ElemenAnimasiScroll style={{ flex: '1 1 300px', maxWidth: '360px' }}>
               <div className="hover-card-efek">
-                <div style={{ color: '#10b981', marginBottom: '24px', display: 'inline-block', padding: '16px', backgroundColor: '#e6f4ea', borderRadius: '50%' }}>
-                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-                </div>
-                <h4 style={{ color: '#064e3b', fontSize: '19px', fontWeight: '700', margin: '0 0 14px 0' }}>Konservasi Total</h4>
-                <p style={{ color: '#64748b', fontSize: '14.5px', lineHeight: '1.7', margin: 0 }}>Menjaga kemurnian hayati serta kesuburan ekologi tanah kelahiran secara persisten.</p>
+                <h4 style={{ color: '#064e3b', fontSize: '19px', fontWeight: '700', margin: '0 0 14px 0' }}>Pendidikan</h4>
+                <p style={{ color: '#64748b', fontSize: '14.5px', lineHeight: '1.7', margin: 0 }}>Mengembangkan cetak biru kurikulum alam praktis yang responsif, adaptif, dan berorientasi pada masa depan lingkungan.</p>
               </div>
             </ElemenAnimasiScroll>
 
             {/* Kartu 2 */}
             <ElemenAnimasiScroll delay="100ms" style={{ flex: '1 1 300px', maxWidth: '360px' }}>
               <div className="hover-card-efek">
-                <div style={{ color: '#059669', marginBottom: '24px', display: 'inline-block', padding: '16px', backgroundColor: '#e8f5e9', borderRadius: '50%' }}>
-                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
-                </div>
-                <h4 style={{ color: '#064e3b', fontSize: '19px', fontWeight: '700', margin: '0 0 14px 0' }}>Inovasi Edukasi</h4>
-                <p style={{ color: '#64748b', fontSize: '14.5px', lineHeight: '1.7', margin: 0 }}>Mengembangkan cetak biru kurikulum alam praktis yang responsif pada masa depan.</p>
+                <h4 style={{ color: '#064e3b', fontSize: '19px', fontWeight: '700', margin: '0 0 14px 0' }}>Penelitian</h4>
+                <p style={{ color: '#64748b', fontSize: '14.5px', lineHeight: '1.7', margin: 0 }}>Meneliti dan menggali potensi hayati lokal guna melahirkan inovasi sains berbasis pelestarian ekologi yang persisten.</p>
               </div>
             </ElemenAnimasiScroll>
 
             {/* Kartu 3 */}
             <ElemenAnimasiScroll delay="200ms" style={{ flex: '1 1 300px', maxWidth: '360px' }}>
               <div className="hover-card-efek">
-                <div style={{ color: '#0d9488', marginBottom: '24px', display: 'inline-block', padding: '16px', backgroundColor: '#e0f2f1', borderRadius: '50%' }}>
-                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-                </div>
-                <h4 style={{ color: '#064e3b', fontSize: '19px', fontWeight: '700', margin: '0 0 14px 0' }}>Sinergi Berdaya</h4>
-                <p style={{ color: '#64748b', fontSize: '14.5px', lineHeight: '1.7', margin: 0 }}>Menggandeng multi-pihak serta masyarakat lingkar kampus untuk tumbuh bersama.</p>
+                <h4 style={{ color: '#064e3b', fontSize: '19px', fontWeight: '700', margin: '0 0 14px 0' }}>Pengabdian</h4>
+                <p style={{ color: '#64748b', fontSize: '14.5px', lineHeight: '1.7', margin: 0 }}>Menggandeng multi-pihak serta masyarakat lingkar kampus untuk menerapkan ilmu pengetahuan secara nyata dan tumbuh bersama.</p>
               </div>
             </ElemenAnimasiScroll>
 
@@ -482,19 +467,19 @@ export default function Home() {
         <div style={{ maxWidth: '1140px', margin: '0 auto' }}>
           <ElemenAnimasiScroll>
             <div style={{ textAlign: 'center', marginBottom: '65px', width: '100%' }}>
-              <span style={{ color: '#10b981', fontWeight: '700', fontSize: '12px', letterSpacing: '2.5px', textTransform: 'uppercase' }}>AKSI & AKUNTABILITAS</span>
+              <span style={{ color: '#10b981', fontWeight: '700', fontSize: '12px', letterSpacing: '2.5px', textTransform: 'uppercase' }}>AKSI </span>
               <h2 style={{ color: '#064e3b', fontSize: '36px', fontWeight: '800', margin: '12px 0 0 0', letterSpacing: '-1px' }}>Dampak Nyata Gerakan</h2>
-              <p style={{ color: '#64748b', fontSize: '16.5px', marginTop: '12px', maxWidth: '600px', margin: '12px auto 0 auto', lineHeight: '1.6' }}>Metrik capaian kontribusi kumulatif dari integrasi program restorasi KATI bersama para mitra.</p>
+              <p style={{ color: '#64748b', fontSize: '16.5px', marginTop: '12px', maxWidth: '600px', margin: '12px auto 0 auto', lineHeight: '1.6' }}>Metrik capaian kontribusi kumulatif dari integrasi program restorasi KATI</p>
             </div>
           </ElemenAnimasiScroll>
 
           <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '30px', width: '100%' }}>
             {[
-              { angka: "3.400+", label: "Pohon Endemik Ditanam", sub: "Menjaga daerah resapan mata air hulu" },
-              { angka: "450+", label: "Siswa Edukasi Harian", sub: "Lulusan bersertifikasi kelas alam" },
+              { angka: "500+", label: "Pohon Mangrove Ditanam", sub: "Menjaga area tepian sungai bajulmati agar tidak terdampak erosi" },
+              { angka: "1.350 Kg", label: "Oksigen Diproduksi", sub: "Pasokan udara bersih yang diproduksi secara alami per tahunnya" },
               // 🟢 JUMLAH MITRA SEKARANG SINKRON DENGAN DATA REAL SUPABASE
-              { angka: `${jumlahMitra}+`, label: "Mitra Korporasi & LSM", sub: "Sinergi aksi serta dana riset iklim" },
-              { angka: "12 Ton", label: "Sampah Organik Terolah", sub: "Manajemen siklus sirkular bernilai ekonomi" }
+              { angka: jumlahMitra, label: "Program Volunteering", sub: "Sinergi aksi pengabdian masyarakat serta dana riset ilmiah" },
+              { angka: "44", label: "Siswa Ter-edukasi", sub: "Lulusan bersertifikasi resmi kelas alam" }
             ].map((item, idx) => (
               <ElemenAnimasiScroll key={idx} delay={`${idx * 120}ms`} style={{ flex: '1 1 240px', maxWidth: '260px' }}>
                 <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '24px', padding: '40px 28px', width: '100%', textAlign: 'center', position: 'relative' }}>

@@ -24,21 +24,21 @@ export default function VolunteerPage() {
     {
       id: "fasilitator-edukasi",
       peran: "Fasilitator Kelas Alam",
-      kuota: "3 Orang",
+      kuota: "0 Orang",
       tugas: "Mendampingi anak-anak sekolah saat berkunjung ke KATI, memandu eksperimen lingkungan sederhana, serta membawakan materi edukasi.",
       syarat: "Menyukai dunia anak-anak, komunikatif, dan memiliki ketertarikan pada isu lingkungan dasar."
     },
     {
       id: "crew-konservasi",
       peran: "Crew Lapangan Konservasi",
-      kuota: "5 Orang",
+      kuota: "0 Orang",
       tugas: "Membantu manajemen pembibitan pohon endemik, pemeliharaan area hutan mikro, serta monitoring kelembaban tanah.",
       syarat: "Fisik sehat, tidak takut kotor, dan siap bekerja langsung di area terbuka."
     },
     {
       id: "digital-creator",
       peran: "Content Creator & Media",
-      kuota: "2 Orang",
+      kuota: "0 Orang",
       tugas: "Mendokumentasikan aktivitas lapangan, membuat desain edukasi lingkungan, serta mengelola publikasi media sosial.",
       syarat: "Kreatif, memiliki HP/kamera mumpuni, dan paham tren media sosial."
     }
@@ -77,24 +77,50 @@ export default function VolunteerPage() {
       
       {/* 🟢 STYLE INJEKSI UNTUK HOVER, AKTIF TAB, & EFEK BUTTON */}
       <style dangerouslySetInnerHTML={{ __html: `
+        /* Desain Kolom Navigasi Utama */
         .menu-nav-column {
+          position: relative;
           border: 2px solid #e2e8f0;
           border-radius: 20px;
-          padding: 30px 24px;
+          padding: 35px 24px 28px 24px;
           text-align: center;
           cursor: pointer;
-          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
           background-color: #ffffff;
+          overflow: hidden;
         }
+        
+        /* Garis Aksen Dekoratif Atas untuk Indikator Interaksi */
+        .menu-nav-column::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 6px;
+          background-color: transparent;
+          transition: background-color 0.3s ease;
+        }
+        
+        /* Efek Hover State */
         .menu-nav-column:hover {
-          transform: translateY(-4px);
-          border-color: #10b981;
-          box-shadow: 0 12px 25px rgba(16, 185, 129, 0.06);
+          transform: translateY(-6px);
+          border-color: #a7f3d0;
+          box-shadow: 0 20px 30px rgba(16, 185, 129, 0.06);
         }
+        .menu-nav-column:hover::before {
+          background-color: #34d399;
+        }
+        
+        /* Efek Active State - Sangat Jelas dan Berwarna Hijau Khas KATI */
         .menu-nav-column.active {
-          border-color: #064e3b;
-          background-color: #f0fdf4;
-          box-shadow: 0 8px 22px rgba(6, 78, 59, 0.05);
+          border-color: #10b981;
+          background-color: #ffffff;
+          box-shadow: 0 20px 35px rgba(6, 78, 59, 0.08);
+          transform: translateY(-2px);
+        }
+        .menu-nav-column.active::before {
+          background-color: #10b981;
         }
 
         .touch-benefit-card {
@@ -156,7 +182,7 @@ export default function VolunteerPage() {
         }
       `}} />
 
-      {/* Pembungkus Konten Utama (Tanpa Navbar Duplikat) */}
+      {/* Pembungkus Konten Utama */}
       <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '60px 20px' }}>
         
         {/* 🟢 1. HEADER HALAMAN MAIN HEADER */}
@@ -173,7 +199,7 @@ export default function VolunteerPage() {
           </p>
         </div>
 
-        {/* 🚀 2. TIGA KOLOM NAVIGATION (Bersih & Responsif) */}
+        {/* 🚀 2. TIGA KOLOM NAVIGATION (Dioptimalkan Agar Lebih Jelas & Klik-able) */}
         <div style={{ 
           display: "grid", 
           gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", 
@@ -186,11 +212,29 @@ export default function VolunteerPage() {
             className={`menu-nav-column ${tabAktif === "pendaftaran" ? "active" : ""}`}
             onClick={() => setTabAktif("pendaftaran")}
           >
-            <div style={{ fontSize: "36px", marginBottom: "12px" }}>📝</div>
-            <h3 style={{ margin: "0 0 8px 0", color: "#064e3b", fontSize: "19px", fontWeight: "700" }}>
+            {/* Status Badge Dinamis */}
+            <div style={{ position: 'absolute', top: '15px', right: '20px' }}>
+              <span style={{ 
+                fontSize: '11px', fontWeight: '800', padding: '4px 10px', borderRadius: '50px',
+                backgroundColor: tabAktif === "pendaftaran" ? "#d1fae5" : "#f1f5f9",
+                color: tabAktif === "pendaftaran" ? "#065f46" : "#64748b"
+              }}>
+                {tabAktif === "pendaftaran" ? "● Sedang Dilihat" : "Buka Menu"}
+              </span>
+            </div>
+
+            <div style={{ fontSize: "40px", marginBottom: "16px", filter: tabAktif === "pendaftaran" ? "none" : "grayscale(30%)" }}>
+              
+            </div>
+            <h3 style={{ 
+              margin: "0 0 10px 0", 
+              color: tabAktif === "pendaftaran" ? "#064e3b" : "#1e293b", 
+              fontSize: "20px", 
+              fontWeight: "800" 
+            }}>
               1. Pendaftaran Volunteer
             </h3>
-            <p style={{ margin: 0, color: "#64748b", fontSize: "14px", lineHeight: "1.5" }}>
+            <p style={{ margin: 0, color: "#64748b", fontSize: "14px", lineHeight: "1.6" }}>
               Lihat benefit eksklusif relawan, kualifikasi, kuota, serta formulir pendaftaran posisi yang tersedia.
             </p>
           </div>
@@ -200,11 +244,29 @@ export default function VolunteerPage() {
             className={`menu-nav-column ${tabAktif === "informasi" ? "active" : ""}`}
             onClick={() => setTabAktif("informasi")}
           >
-            <div style={{ fontSize: "36px", marginBottom: "12px" }}>🗂️</div>
-            <h3 style={{ margin: "0 0 8px 0", color: "#064e3b", fontSize: "19px", fontWeight: "700" }}>
+            {/* Status Badge Dinamis */}
+            <div style={{ position: 'absolute', top: '15px', right: '20px' }}>
+              <span style={{ 
+                fontSize: '11px', fontWeight: '800', padding: '4px 10px', borderRadius: '50px',
+                backgroundColor: tabAktif === "informasi" ? "#d1fae5" : "#f1f5f9",
+                color: tabAktif === "informasi" ? "#065f46" : "#64748b"
+              }}>
+                {tabAktif === "informasi" ? "● Sedang Dilihat" : "Buka Menu"}
+              </span>
+            </div>
+
+            <div style={{ fontSize: "40px", marginBottom: "16px", filter: tabAktif === "informasi" ? "none" : "grayscale(30%)" }}>
+            
+            </div>
+            <h3 style={{ 
+              margin: "0 0 10px 0", 
+              color: tabAktif === "informasi" ? "#064e3b" : "#1e293b", 
+              fontSize: "20px", 
+              fontWeight: "800" 
+            }}>
               2. Informasi Data Volunteer
             </h3>
-            <p style={{ margin: 0, color: "#64748b", fontSize: "14px", lineHeight: "1.5" }}>
+            <p style={{ margin: 0, color: "#64748b", fontSize: "14px", lineHeight: "1.6" }}>
               Akses direktori khusus divisi penjelajah, rekam jejak, semboyan, serta profil tim ekspedisi KATI.
             </p>
           </div>
@@ -214,11 +276,29 @@ export default function VolunteerPage() {
             className={`menu-nav-column ${tabAktif === "dampak" ? "active" : ""}`}
             onClick={() => setTabAktif("dampak")}
           >
-            <div style={{ fontSize: "36px", marginBottom: "12px" }}>🏆</div>
-            <h3 style={{ margin: "0 0 8px 0", color: "#064e3b", fontSize: "19px", fontWeight: "700" }}>
+            {/* Status Badge Dinamis */}
+            <div style={{ position: 'absolute', top: '15px', right: '20px' }}>
+              <span style={{ 
+                fontSize: '11px', fontWeight: '800', padding: '4px 10px', borderRadius: '50px',
+                backgroundColor: tabAktif === "dampak" ? "#d1fae5" : "#f1f5f9",
+                color: tabAktif === "dampak" ? "#065f46" : "#64748b"
+              }}>
+                {tabAktif === "dampak" ? "● Sedang Dilihat" : "Buka Menu"}
+              </span>
+            </div>
+
+            <div style={{ fontSize: "40px", marginBottom: "16px", filter: tabAktif === "dampak" ? "none" : "grayscale(30%)" }}>
+            
+            </div>
+            <h3 style={{ 
+              margin: "0 0 10px 0", 
+              color: tabAktif === "dampak" ? "#064e3b" : "#1e293b", 
+              fontSize: "20px", 
+              fontWeight: "800" 
+            }}>
               3. Dampak & Achievement
             </h3>
-            <p style={{ margin: 0, color: "#64748b", fontSize: "14px", lineHeight: "1.5" }}>
+            <p style={{ margin: 0, color: "#64748b", fontSize: "14px", lineHeight: "1.6" }}>
               Pantau total infografis pencapaian ekologi dan statistik riil aksi relawan kami di lapangan.
             </p>
           </div>
@@ -330,7 +410,7 @@ export default function VolunteerPage() {
                       display: "flex", flexDirection: "column", alignItems: "center", minHeight: "210px", justifyContent: "center"
                     }}>
                       <div style={{ position: "absolute", top: "14px", left: "14px", backgroundColor: "#ffffff", padding: "4px 10px", borderRadius: "50px" }}>
-                        <span style={{ color: "#0d1b2a", fontSize: "10px", fontWeight: "800" }}>🍃 {tim.kategori}</span>
+                        <span style={{ color: "#0d1b2a", fontSize: "10px", fontWeight: "800" }}>{tim.kategori}</span>
                       </div>
 
                       <div style={{ width: "75px", height: "75px", borderRadius: "50%", overflow: "hidden", border: "3px solid rgba(255, 255, 255, 0.2)", marginBottom: "12px" }}>
@@ -369,19 +449,19 @@ export default function VolunteerPage() {
                 </p>
               </div>
 
-              {/* Tampilan Box Statistik Utama (Bersih & Rapi Tanpa Q&A Lagi) */}
+              {/* Tampilan Box Statistik Utama */}
               <div style={{ display: 'flex', gap: '25px', flexWrap: 'wrap', justifyContent: 'center' }}>
                 <div style={{ flex: '1 1 250px', backgroundColor: 'white', padding: '40px 20px', borderRadius: '20px', textAlign: 'center', border: '1px solid #e2e8f0', boxShadow: '0 4px 15px rgba(0,0,0,0.02)' }}>
-                  <div style={{ fontSize: '46px', fontWeight: '900', color: '#10b981', marginBottom: '6px' }}>120+</div>
+                  <div style={{ fontSize: '46px', fontWeight: '900', color: '#10b981', marginBottom: '6px' }}>25</div>
                   <div style={{ fontSize: '13px', color: '#475569', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '1px' }}>Relawan Aktif</div>
                 </div>
                 <div style={{ flex: '1 1 250px', backgroundColor: 'white', padding: '40px 20px', borderRadius: '20px', textAlign: 'center', border: '1px solid #e2e8f0', boxShadow: '0 4px 15px rgba(0,0,0,0.02)' }}>
-                  <div style={{ fontSize: '46px', fontWeight: '900', color: '#10b981', marginBottom: '6px' }}>5.000+</div>
+                  <div style={{ fontSize: '46px', fontWeight: '900', color: '#10b981', marginBottom: '6px' }}>500+</div>
                   <div style={{ fontSize: '13px', color: '#475569', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '1px' }}>Pohon Ditanam</div>
                 </div>
                 <div style={{ flex: '1 1 250px', backgroundColor: 'white', padding: '40px 20px', borderRadius: '20px', textAlign: 'center', border: '1px solid #e2e8f0', boxShadow: '0 4px 15px rgba(0,0,0,0.02)' }}>
-                  <div style={{ fontSize: '46px', fontWeight: '900', color: '#10b981', marginBottom: '6px' }}>35</div>
-                  <div style={{ fontSize: '13px', color: '#475569', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '1px' }}>Desa Binaan</div>
+                  <div style={{ fontSize: '46px', fontWeight: '900', color: '#10b981', marginBottom: '6px' }}>1.350 kg</div>
+                  <div style={{ fontSize: '13px', color: '#475569', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '1px' }}>Oksigen diproduksi pertahun</div>
                 </div>
               </div>
             </div>

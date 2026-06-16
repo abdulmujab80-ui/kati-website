@@ -45,7 +45,7 @@ const DATABASE_VOLUNTEER = {
   "arunika-bumi": {
     namaTim: "Tim Ekspedisi Arunika Bumi (2025)",
     deskripsi: "Bergerak di ranah pemberdayaan masyarakat pinggiran hutan, melakukan edukasi pengelolaan limbah mandiri.",
-    warnaTema: "#1e3a8a",
+    warnaTema: "#064e3b",
     anggota: [
       { 
         nama: "Ahmad Fauzi", 
@@ -72,7 +72,7 @@ const DATABASE_VOLUNTEER = {
   "tirta-amarta": {
     namaTim: "Tim Ekspedisi Tirta Amarta (2026)",
     deskripsi: "Menjalankan misi pembersihan sungai hulu, reboisasi bantaran parit, serta uji laboratorium kelayakan air konsumsi warga.",
-    warnaTema: "#7c2d12",
+    warnaTema: "#064e3b",
     anggota: [
       { 
         nama: "Tsabita Raghdah", 
@@ -326,7 +326,7 @@ export default function DetailVolunteerPage() {
             backgroundColor: "white", padding: "24px", borderRadius: "20px",
             border: "1px solid #e2e8f0", boxShadow: "0 4px 10px rgba(0,0,0,0.01)"
           }}>
-            <div style={{ fontSize: "28px", marginBottom: "12px" }}>📝</div>
+            <div style={{ fontSize: "28px", marginBottom: "12px" }}></div>
             <h4 style={{ margin: "0 0 8px 0", color: "#0f172a", fontSize: "16px", fontWeight: "700" }}>
               Pendaftaran Volunteer
             </h4>
@@ -340,7 +340,7 @@ export default function DetailVolunteerPage() {
             backgroundColor: "white", padding: "24px", borderRadius: "20px",
             border: "1px solid #e2e8f0", boxShadow: "0 4px 10px rgba(0,0,0,0.01)"
           }}>
-            <div style={{ fontSize: "28px", marginBottom: "12px" }}>ℹ️</div>
+            <div style={{ fontSize: "28px", marginBottom: "12px" }}></div>
             <h4 style={{ margin: "0 0 8px 0", color: "#0f172a", fontSize: "16px", fontWeight: "700" }}>
               Informasi Volunteer
             </h4>
@@ -354,7 +354,7 @@ export default function DetailVolunteerPage() {
             backgroundColor: "white", padding: "24px", borderRadius: "20px",
             border: "1px solid #e2e8f0", boxShadow: "0 4px 10px rgba(0,0,0,0.01)"
           }}>
-            <div style={{ fontSize: "28px", marginBottom: "12px" }}>🏆</div>
+            <div style={{ fontSize: "28px", marginBottom: "12px" }}></div>
             <h4 style={{ margin: "0 0 8px 0", color: "#0f172a", fontSize: "16px", fontWeight: "700" }}>
               Dampak & Achievement
             </h4>
