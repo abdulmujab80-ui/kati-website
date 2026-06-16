@@ -26,17 +26,22 @@ export default function RootLayout({
   return (
     <html lang="id" style={{ scrollBehavior: 'smooth' }}>
       <head>
+        {/* 🏷️ JUDUL HALAMAN (Teks biru yang bisa diklik di Google) */}
+        <title>Kampus Alam Tegalsari Indonesia (KATI)</title>
+
         {/* ⚡ KUNCI UTAMA: Biar seluruh tampilan website otomatis mengecil & pas di HP */}
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+        <meta name="description" content="Kampus Alam Tegalsari Indonesia (KATI) adalah lembaga pendidikan non-formal berbasis konservasi alam, budaya, dan teknologi di Kabupaten Malang." />
         
-        {/* 🔍 STRUKTUR DATA GOOGLE: Mengubah nama kampusalam.com menjadi Nama Resmi di Google Search */}
+        {/* 🔍 STRUKTUR DATA GOOGLE: Mengubah nama situs di atas URL dari kampusalam.com menjadi Nama Resmi */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "WebSite",
-              "name": "Kampus Alam Tegalsari Indonesia (KATI)",
+              "name": "Kampus Alam Tegalsari Indonesia",
+              "alternateName": ["KATI", "Kampus Alam Tegalsari"],
               "url": "https://kampusalam.com"
             })
           }}
