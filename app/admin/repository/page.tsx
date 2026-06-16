@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@supabase/supabase-js";
 
-// Inisialisasi Supabase (Sesuaikan dengan file client proyekmu)
+// Inisialisasi Supabase
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
@@ -36,12 +36,13 @@ export default function AdminRepositoryPage() {
   const [formData, setFormData] = useState({
     judul: "",
     penulis: "",
-    rumpun_ilmu: "Ekologi", // Default ke pilihan pertama
+    rumpun_ilmu: "Ekologi", 
     abstrak_id: "",
     abstrak_en: "",
     kata_kunci: "",
     google_drive_url: "",
     kati_id: "",
+    tahun: new Date().getFullYear(), // 🌟 Nilai default tahun saat ini
   });
 
   // 🔒 Cek Sesi Login Admin Secara Real-time
@@ -96,12 +97,18 @@ export default function AdminRepositoryPage() {
     setPesan({ sukses: false, teks: "" });
 
     try {
-      const { error } = await supabase.from("repository").insert([formData]);
+      // 🌟 Amankan tipe data tahun menjadi Number agar sinkron dengan integer di Supabase
+      const dataToSubmit = {
+        ...formData,
+        tahun: Number(formData.tahun) || new Date().getFullYear()
+      };
+
+      const { error } = await supabase.from("repository").insert([dataToSubmit]);
       if (error) throw error;
 
       setPesan({ sukses: true, teks: "🎉 Dokumen ilmiah berhasil diterbitkan ke KATI Repository!" });
       
-      // Reset form setelah sukses
+      // 🌟 Reset form setelah sukses (termasuk mengembalikan tahun ke tahun saat ini)
       setFormData({
         judul: "",
         penulis: "",
@@ -111,6 +118,7 @@ export default function AdminRepositoryPage() {
         kata_kunci: "",
         google_drive_url: "",
         kati_id: "",
+        tahun: new Date().getFullYear(),
       });
 
     } catch (error: any) {
@@ -219,7 +227,8 @@ export default function AdminRepositoryPage() {
         {/* Form Input Data */}
         <form onSubmit={handleSubmitJurnal} className="space-y-5">
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* 🌟 Mengubah grid dari 2 kolom menjadi 3 kolom di tampilan desktop */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="space-y-1">
               <label className="text-xs font-bold text-slate-700 uppercase">Nomor Registrasi KATI ID</label>
               <input
@@ -245,6 +254,22 @@ export default function AdminRepositoryPage() {
                   <option key={r} value={r}>{r}</option>
                 ))}
               </select>
+            </div>
+
+            {/* 🌟 KOLOM BARU: Input Tahun Publikasi */}
+            <div className="space-y-1">
+              <label className="text-xs font-bold text-slate-700 uppercase">Tahun Publikasi</label>
+              <input
+                type="number"
+                name="tahun"
+                required
+                min="1900"
+                max="2100"
+                placeholder="Contoh: 2026"
+                value={formData.tahun}
+                onChange={handleChange}
+                className="w-full p-3 border border-slate-300 rounded-lg text-sm text-slate-800 focus:ring-2 focus:ring-emerald-500 outline-none"
+              />
             </div>
           </div>
 
