@@ -317,7 +317,7 @@ export default function VolunteerPage() {
               {/* Benefit Relawan */}
               <div style={{ backgroundColor: '#064e3b', borderRadius: '20px', padding: '35px', color: 'white', marginBottom: '45px', boxShadow: '0 12px 25px rgba(6, 78, 59, 0.1)' }}>
                 <h4 style={{ fontSize: '20px', fontWeight: '700', marginBottom: '20px', textAlign: 'center' }}>
-                  Apa Yang Akan Kamu Dapatkan? 💚
+                  Apa Yang Akan Kamu Dapatkan?
                 </h4>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '20px' }}>
                   <div className="touch-benefit-card" style={{ backgroundColor: 'rgba(255,255,255,0.08)', padding: '20px', borderRadius: '14px' }}>
@@ -371,7 +371,7 @@ export default function VolunteerPage() {
                             fontWeight: '700', cursor: 'pointer', whiteSpace: 'nowrap'
                           }}
                         >
-                          Daftar Lewat Form 🙋‍♂️
+                          Daftar Lewat Form
                         </button>
                       </a>
                     </div>

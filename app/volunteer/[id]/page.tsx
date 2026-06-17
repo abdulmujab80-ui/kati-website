@@ -17,7 +17,7 @@ const DATABASE_VOLUNTEER = {
         bergabung: "2023", 
         email: "abdul.mujab@kati.or.id", 
         status: "Alumni",
-        foto: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80", // Gunakan URL foto asli Anda nanti
+        foto: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80",
         linkSertifikat: "https://drive.google.com/file/d/1g_ilo0Unz1j4NTIvTzjpXdtOYl3H1Gsj/view?usp=sharing" 
       },
       { 
@@ -81,7 +81,7 @@ const DATABASE_VOLUNTEER = {
         bergabung: "2026", 
         email: "tsabitaraghdah72@gmail.com", 
         status: "Aktif",
-        foto: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=256&q=80",
+        foto: "/galeri/tsabita_ta.jpeg", // 👈 PERBAIKAN: Ditambahkan tanda garis miring '/' di depannya
         linkSertifikat: "#" 
       },
       { 
@@ -314,7 +314,7 @@ export default function DetailVolunteerPage() {
           </p>
         </div>
 
-        {/* ================= BARU: 3 KOLOM INFO UTAMA VOLUNTEER ================= */}
+        {/* ================= 3 KOLOM INFO UTAMA VOLUNTEER ================= */}
         <div style={{
           display: "grid",
           gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",

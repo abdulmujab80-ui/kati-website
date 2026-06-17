@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 // 🟢 IMPORT SUPABASE CLIENT
 import { createClient } from "@supabase/supabase-js";
 
-// INISIALISASI SUPABASE KLIEN (Menggunakan env yang sudah kamu pasang)
+// INISIALISASI SUPABASE KLIEN
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
@@ -15,7 +15,7 @@ interface AnimasiProps {
   style?: React.CSSProperties; 
 }
 
-// Komponen Pembungkus Efek Gulir Kebawah (Scroll Animation) dengan dukungan Staggered Delay
+// Komponen Pembungkus Efek Gulir Kebawah (Scroll Animation)
 function ElemenAnimasiScroll({ children, delay = "0ms", style }: AnimasiProps) {
   const [terlihat, setTerlihat] = useState(false);
   const domRef = useRef<HTMLDivElement>(null);
@@ -62,7 +62,7 @@ function ElemenAnimasiScroll({ children, delay = "0ms", style }: AnimasiProps) {
 export default function Home() {
   const [slideAktif, setSlideAktif] = useState(0);
 
-  // 🟢 MENGUBAH DATA MENJADI STATE DENGAN FALLBACK DATA LAMA (Agar tidak kosongan saat loading)
+  // 1. STATE & FALLBACK BERITA (Maksimal 3 Otomatis)
   const [daftarBerita, setDaftarBerita] = useState([
     {
       id: 1,
@@ -82,6 +82,7 @@ export default function Home() {
     },
   ]);
 
+  // 2. STATE & FALLBACK ARTIKEL (Maksimal 3 Otomatis)
   const [daftarArtikel, setDaftarArtikel] = useState([
     {
       id: 1,
@@ -104,11 +105,20 @@ export default function Home() {
       waktu: "8 Menit Baca",
       penulis: "Tim Kreatif KATI",
     },
+    
   ]);
 
-  const [jumlahMitra, setJumlahMitra] = useState(18); // Default state mitra lama
+  // 3. STATE & FALLBACK GALERI FOTO (Otomatis Tersinkronisasi)
+  const [daftarGaleri, setDaftarGaleri] = useState([
+    { id: 1, judul: "Pendopo", gambar: "pendopo.jpg" },
+    { id: 2, judul: "Susur Sungai", gambar: "rifa.JPG" },
+    { id: 3, judul: "Susur Sungai", gambar: "sungai.JPG" },
+    { id: 4, judul: "Tim Ekpedisi 2023", gambar: "eja.JPG" },
+  ]);
 
-  // Fungsi Pembantu format tanggal Indonesia
+  const [jumlahMitra, setJumlahMitra] = useState(18);
+
+  // Fungsi format tanggal Indonesia
   const formatTanggalIndo = (isoString: string) => {
     if (!isoString) return "";
     const d = new Date(isoString);
@@ -119,10 +129,10 @@ export default function Home() {
     });
   };
 
-  // 🟢 EFFECT UNTUK FETCH DATA REAL DARI SUPABASE
+  // EFFECT UNTUK FETCH DATA DARI SUPABASE secara Otomatis
   useEffect(() => {
     async function ambilDataReal() {
-      // 1. Ambil 3 Berita Terbaru
+      // Fetch 3 Berita Terbaru
       try {
         const { data, error } = await supabase
           .from("berita")
@@ -137,7 +147,6 @@ export default function Home() {
               tag: b.kategori || "Berita",
               tanggal: formatTanggalIndo(b.created_at),
               judul: b.judul,
-              // Potong konten untuk deskripsi pendek di card beranda
               deskripsi: b.konten_lengkap ? (b.konten_lengkap.length > 120 ? b.konten_lengkap.substring(0, 120) + "..." : b.konten_lengkap) : "",
               gambar: b.gambar || "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=600&auto=format&fit=crop&q=80",
             }))
@@ -147,11 +156,10 @@ export default function Home() {
         console.error("Gagal sinkronisasi data berita:", err);
       }
 
-      // 2. Ambil 3 Artikel Repository Terbaru
+      // Fetch 3 Artikel Terbaru
       try {
-        // Mencari ke tabel 'repository' atau tabel 'artikel' (Sistem otomatis mendeteksi)
         const { data, error } = await supabase
-          .from("repository") 
+          .from("artikel") 
           .select("*")
           .order("created_at", { ascending: false })
           .limit(3);
@@ -160,7 +168,7 @@ export default function Home() {
           setDaftarArtikel(
             data.map((r) => ({
               id: r.id,
-              kategori: r.kategori || "Umum",
+              kategori: r.kategori || "Artikel",
               judul: r.judul,
               waktu: r.waktu_baca || r.waktu || "5 Menit Baca",
               penulis: r.penulis || "Tim KATI",
@@ -168,18 +176,31 @@ export default function Home() {
           );
         }
       } catch (err) {
-        // Fallback jika nama tabelmu adalah 'artikel' bukan 'repository'
-        try {
-          const { data } = await supabase.from("artikel").select("*").order("created_at", { ascending: false }).limit(3);
-          if (data && data.length > 0) {
-            setDaftarArtikel(data.map(a => ({ id: a.id, kategori: a.kategori || "Umum", judul: a.judul, waktu: a.waktu_baca || "5 Menit Baca", penulis: a.penulis || "Tim KATI" })));
-          }
-        } catch(e) {
-          console.error("Gagal sinkronisasi data artikel/repository:", e);
-        }
+        console.error("Gagal sinkronisasi data artikel:", err);
       }
 
-      // 3. Ambil Total Angka Kemitraan (Mengikuti jumlah baris di tabel 'mitra')
+      // Fetch Data Galeri Foto (Maksimal mengambil 6 foto terbaru)
+      try {
+        const { data, error } = await supabase
+          .from("galeri")
+          .select("*")
+          .order("created_at", { ascending: false })
+          .limit(6);
+
+        if (!error && data && data.length > 0) {
+          setDaftarGaleri(
+            data.map((g) => ({
+              id: g.id,
+              judul: g.judul || g.caption || "Kegiatan KATI",
+              gambar: g.gambar || g.url || "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=600&auto=format&fit=crop&q=80",
+            }))
+          );
+        }
+      } catch (err) {
+        console.error("Gagal sinkronisasi data galeri:", err);
+      }
+
+      // Fetch Total Angka Kemitraan
       try {
         const { count, error } = await supabase
           .from("mitra")
@@ -261,6 +282,12 @@ export default function Home() {
 
             .kartu-artikel { background: white; border-radius: 20px; border: 1px solid #e2e8f0; padding: 28px; display: flex; flex-direction: column; justify-content: space-between; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); text-decoration: none; color: inherit; }
             .kartu-artikel:hover { border-color: #10b981; transform: translateX(6px); background-color: #f8fafc; }
+
+            /* CSS UNTUK MENU GALERI BARU */
+            .wrapper-foto-galeri { position: relative; border-radius: 20px; overflow: hidden; height: 260px; cursor: pointer; border: 1px solid #e2e8f0; transition: all 0.4s ease; }
+            .wrapper-foto-galeri:hover { transform: scale(1.025); box-shadow: 0 20px 40px rgba(6, 78, 59, 0.12); border-color: #10b981; }
+            .overlay-teks-galeri { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(2, 44, 34, 0.9) 0%, rgba(2, 44, 34, 0.4) 60%, transparent 100%); padding: 24px 20px; color: white; opacity: 0; transition: opacity 0.3s ease; display: flex; align-items: flex-end; height: 100%; }
+            .wrapper-foto-galeri:hover .overlay-teks-galeri { opacity: 1; }
           `,
         }}
       />
@@ -476,9 +503,8 @@ export default function Home() {
           <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '30px', width: '100%' }}>
             {[
               { angka: "500+", label: "Pohon Mangrove Ditanam", sub: "Menjaga area tepian sungai bajulmati agar tidak terdampak erosi" },
-              { angka: "1.350 Kg", label: "Oksigen Diproduksi", sub: "Pasokan udara bersih yang diproduksi secara alami per tahunnya" },
-              // 🟢 JUMLAH MITRA SEKARANG SINKRON DENGAN DATA REAL SUPABASE
-              { angka: jumlahMitra, label: "Program Volunteering", sub: "Sinergi aksi pengabdian masyarakat serta dana riset ilmiah" },
+              { angka: "1.350 Kg", label: "Oksigen Diproduksi", sub: "Pasokan udara bersih yang diproduksi secara alami per harinya" },
+              { angka: "5", label: "Program Volunteering", sub: "Sinergi aksi pengabdian masyarakat serta dana riset ilmiah" },
               { angka: "44", label: "Siswa Ter-edukasi", sub: "Lulusan bersertifikasi resmi kelas alam" }
             ].map((item, idx) => (
               <ElemenAnimasiScroll key={idx} delay={`${idx * 120}ms`} style={{ flex: '1 1 240px', maxWidth: '260px' }}>
@@ -493,8 +519,8 @@ export default function Home() {
         </div>
       </div>
 
-      {/* BAGIAN 6: Berita Utama & Artikel Komunitas */}
-      <div style={{ padding: "100px 20px 120px 20px", backgroundColor: "#f8fafc", borderTop: "1px solid #e2e8f0" }}>
+      {/* BAGIAN 6: Berita Utama & Artikel Komunitas (Masing-masing Maksimal 3 Terkini) */}
+      <div style={{ padding: "100px 20px 100px 20px", backgroundColor: "#f8fafc", borderTop: "1px solid #e2e8f0" }}>
         <div style={{ maxWidth: "1140px", margin: "0 auto" }}>
           
           <ElemenAnimasiScroll>
@@ -520,7 +546,6 @@ export default function Home() {
             <div style={{ display: "flex", flexDirection: "column", gap: "25px", flex: "1" }}>
               {daftarBerita.map((item, index) => (
                 <ElemenAnimasiScroll key={index} delay={`${index * 150}ms`}>
-                  {/* Mengarahkan link href dinamis ke halaman detail berita */}
                   <a href={`/berita/${item.id}`} className="kartu-berita" style={{ flexDirection: "row", flexWrap: "wrap", width: "100%" }}>
                     <div style={{ flex: "1 1 180px", background: `url(${item.gambar}) center/cover no-repeat`, minHeight: "220px" }} />
                     <div style={{ flex: "1.4 1 260px", padding: "30px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
@@ -540,12 +565,11 @@ export default function Home() {
               ))}
             </div>
 
-            {/* SISI KANAN: REPOSITORY / ARTIKEL SUPABASE */}
+            {/* SISI KANAN: 3 ARTIKEL SUPABASE (REPOSITORY SUDAH DIHAPUS) */}
             <div style={{ display: "flex", flexDirection: "column", gap: "20px", flex: "1" }}>
               {daftarArtikel.map((art, index) => (
                 <ElemenAnimasiScroll key={index} delay={`${index * 120}ms`}>
-                  {/* Mengarahkan link href dinamis ke halaman detail repository */}
-                  <a href={`/repository/${art.id}`} className="kartu-artikel" style={{ width: "100%" }}>
+                  <a href={`/artikel/${art.id}`} className="kartu-artikel" style={{ width: "100%" }}>
                     <div>
                       <span style={{ backgroundColor: "#e2e8f0", color: "#475569", fontSize: "11px", fontWeight: "700", padding: "5px 10px", borderRadius: "6px", textTransform: "uppercase", display: "inline-block", marginBottom: "14px", letterSpacing: "0.5px" }}>
                         {art.kategori}
@@ -562,6 +586,51 @@ export default function Home() {
             </div>
 
           </div>
+        </div>
+      </div>
+
+      {/* 🔴 BAGIAN 7 BARU: MENU & GRID GALERI FOTO KATI */}
+      <div style={{ padding: "100px 20px 120px 20px", backgroundColor: "#ffffff" }}>
+        <div style={{ maxWidth: "1140px", margin: "0 auto" }}>
+          
+          <ElemenAnimasiScroll>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "50px", flexWrap: "wrap", gap: "20px", width: "100%" }}>
+              <div>
+                <span style={{ color: "#10b981", fontWeight: "700", fontSize: "12px", letterSpacing: "2.5px", textTransform: "uppercase" }}>DOKUMENTASI AKSI</span>
+                <h2 style={{ color: "#064e3b", fontSize: "36px", fontWeight: "800", margin: "6px 0 0 0", letterSpacing: "-1px" }}>Galeri Kegiatan</h2>
+              </div>
+              <a
+                href="/galeri"
+                style={{ color: "#10b981", textDecoration: "none", fontWeight: "700", fontSize: "15px", borderBottom: "2px solid transparent", transition: "all 0.3s ease", paddingBottom: "2px" }}
+                onMouseEnter={(e) => (e.currentTarget.style.borderBottom = "2px solid #10b981")}
+                onMouseLeave={(e) => (e.currentTarget.style.borderBottom = "2px solid transparent")}
+              >
+                Lihat Semua Dokumentasi →
+              </a>
+            </div>
+          </ElemenAnimasiScroll>
+
+          {/* GRID RESOLUSI GALERI SECARA RESPONSIV */}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "25px" }}>
+            {daftarGaleri.map((gal, index) => (
+              <ElemenAnimasiScroll key={gal.id || index} delay={`${index * 100}ms`}>
+                <div 
+                  className="wrapper-foto-galeri" 
+                  style={{ 
+                    width: "100%", 
+                    background: `url(${gal.gambar}) center/cover no-repeat` 
+                  }}
+                >
+                  <div className="overlay-teks-galeri">
+                    <h4 style={{ margin: 0, fontSize: "16px", fontWeight: "700", letterSpacing: "-0.5px" }}>
+                      {gal.judul}
+                    </h4>
+                  </div>
+                </div>
+              </ElemenAnimasiScroll>
+            ))}
+          </div>
+
         </div>
       </div>
 
