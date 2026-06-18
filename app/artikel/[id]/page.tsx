@@ -164,12 +164,13 @@ export default function DetailArtikelPublik() {
             />
           )}
 
-          {/* Isi Konten Artikel (Mendukung Spasi Paragraf) */}
+          {/* Isi Konten Artikel (Mendukung Spasi Paragraf & Rata Kanan-Kiri) */}
           <div style={{ 
             fontSize: "17px", 
             color: "#334155", 
             lineHeight: "1.8", 
-            whiteSpace: "pre-wrap", // Menjaga enter/paragraf agar tidak menyatu
+            textAlign: "justify",    // 👈 MEMBUAT TEKS RATA KANAN-KIRI (JUSTIFY)
+            whiteSpace: "pre-wrap",  // Menjaga enter/paragraf agar tidak menyatu
             letterSpacing: "0.2px"
           }}>
             {kontenArtikel}

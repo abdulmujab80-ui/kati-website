@@ -82,9 +82,9 @@ export default function PortalBeritaPage() {
       
       {/* HEADER HERO SECTION */}
       <div className="bg-[#053e2f] text-white py-16 px-4 text-center">
-        <h1 className="text-4xl md:text-5xl font-black mb-4 tracking-tight">Berita & Aksi</h1>
+        <h1 className="text-4xl md:text-5xl font-black mb-4 tracking-tight">Berita</h1>
         <p className="text-emerald-100 text-lg max-w-2xl mx-auto font-medium">
-          Jendela informasi aksi, edukasi, dan pelestarian lingkungan di sekitar Kampus Alam Tegalsari Indonesia.
+          Jendela informasi yang aktual dan faktual di Kampus Alam Tegalsari Indonesia.
         </p>
       </div>
 

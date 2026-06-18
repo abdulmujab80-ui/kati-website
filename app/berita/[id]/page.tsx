@@ -13,6 +13,7 @@ interface Berita {
   gambar: string;
   created_at: string;
   views: number;
+  penulis?: string; // Menambahkan opsi kolom penulis
 }
 
 export default function DetailBerita() {
@@ -62,72 +63,105 @@ export default function DetailBerita() {
     });
   };
 
+  const fontStyle = { fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif' };
+
   if (loading) {
-    return <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh", backgroundColor: "#ecfdf5", color: "#064e3b" }}><h2>Memuat cerita dari alam...</h2></div>;
+    return (
+      <div style={{ ...fontStyle, display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh", backgroundColor: "#f4fbf7", color: "#063e2b" }}>
+        <h2>Memuat cerita dari alam...</h2>
+      </div>
+    );
   }
 
   if (!berita) {
-    return <div style={{ textAlign: "center", padding: "50px" }}><h2>Berita tidak ditemukan!</h2><button onClick={() => router.push('/berita')}>Kembali</button></div>;
+    return (
+      <div style={{ ...fontStyle, textAlign: "center", padding: "50px" }}>
+        <h2>Berita tidak ditemukan!</h2>
+        <button onClick={() => router.push('/berita')}>Kembali</button>
+      </div>
+    );
   }
 
+  // Nama penulis fallback jika kolom di database kosong
+  const penulisBerita = berita.penulis || "Wardatul Fitriah";
+
   return (
-    <div style={{ backgroundColor: "#f8fafc", minHeight: "100vh", paddingBottom: "80px" }}>
-      
-      {/* Gambar Cover Full Width */}
-      <div style={{ width: "100%", height: "450px", position: "relative" }}>
-        <img 
-          src={berita.gambar} 
-          alt={berita.judul} 
-          style={{ width: "100%", height: "100%", objectFit: "cover", filter: "brightness(0.7)" }} 
-        />
+    <div style={{ ...fontStyle, backgroundColor: "#f4fbf7", minHeight: "100vh", padding: "40px 20px 80px 20px" }}>
+      <div style={{ maxWidth: "840px", margin: "0 auto" }}>
         
-        {/* Tombol Kembali (Melayang di atas gambar) */}
+        {/* Tombol Kembali yang Minimalis */}
         <button 
           onClick={() => router.push('/berita')}
           style={{ 
-            position: "absolute", top: "30px", left: "30px", 
-            padding: "10px 20px", backgroundColor: "rgba(255,255,255,0.2)", 
-            backdropFilter: "blur(5px)", color: "white", border: "1px solid white", 
-            borderRadius: "30px", cursor: "pointer", fontWeight: "bold",
-            display: "flex", alignItems: "center", gap: "8px"
+            background: "none", border: "none", color: "#063e2b", 
+            fontSize: "14px", fontWeight: "600", cursor: "pointer", 
+            display: "flex", alignItems: "center", gap: "8px", marginBottom: "30px", padding: 0 
           }}
         >
-          ← Kembali ke Daftar
+          ← Kembali ke Daftar Berita
         </button>
-      </div>
 
-      {/* Konten Artikel Utama */}
-      <div style={{ 
-        maxWidth: "800px", margin: "-100px auto 0", 
-        backgroundColor: "white", borderRadius: "20px", 
-        padding: "50px", position: "relative", zIndex: 10,
-        boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1)" 
-      }}>
-        
-        {/* Meta Info (Kategori, Tanggal, Views) */}
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "15px", alignItems: "center", marginBottom: "20px", fontSize: "14px" }}>
-          <span style={{ backgroundColor: "#16a34a", color: "white", padding: "6px 16px", borderRadius: "20px", fontWeight: "bold", letterSpacing: "1px" }}>
-            {berita.kategori}
-          </span>
-          <span style={{ color: "#64748b", fontWeight: "500" }}>{formatTanggal(berita.created_at)}</span>
-          <span style={{ color: "#94a3b8" }}>•</span>
-          <span style={{ color: "#64748b", display: "flex", alignItems: "center", gap: "5px" }}>
-            👁️ {(berita.views || 0) + 1} Orang membaca ini
-          </span>
-        </div>
-        
-        {/* Judul Artikel */}
-        <h1 style={{ fontSize: "36px", color: "#0f172a", marginBottom: "35px", lineHeight: "1.3", fontWeight: "800" }}>
-          {berita.judul}
-        </h1>
-        
-        {/* Paragraf Artikel */}
-        <div style={{ color: "#334155", fontSize: "18px", lineHeight: "1.9", textAlign: "justify" }}>
-          {berita.konten_lengkap.split('\n').map((paragraf, index) => (
-            <p key={index} style={{ marginBottom: "24px" }}>
-              {paragraf}
-            </p>
-          ))}
+        {/* Kontainer Putih Artikel Utama */}
+        <article style={{ backgroundColor: "#ffffff", borderRadius: "24px", padding: "50px 40px", boxShadow: "0 20px 40px -10px rgba(0, 0, 0, 0.02)" }}>
+          
+          {/* 🏷️ Tag Kategori & Informasi Tanggal / Views */}
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "12px", alignItems: "center", marginBottom: "20px" }}>
+            <span style={{ backgroundColor: "#d1fae5", color: "#063e2b", fontSize: "12px", fontWeight: "700", padding: "6px 14px", borderRadius: "100px", textTransform: "uppercase", letterSpacing: "0.5px" }}>
+              {berita.kategori}
+            </span>
+            <span style={{ color: "#94a3b8", fontSize: "13px", fontWeight: "500" }}>
+              {formatTanggal(berita.created_at)}
+            </span>
+            <span style={{ color: "#cbd5e1" }}>•</span>
+            <span style={{ color: "#64748b", fontSize: "13px", display: "flex", alignItems: "center", gap: "5px", fontWeight: "500" }}>
+              👁️ {berita.views || 0} Kali Dibaca
+            </span>
+          </div>
+
+          {/* 📰 Judul Berita (Besar, Tebal, dan Berwarna Hijau Gelap KATI) */}
+          <h1 style={{ fontSize: "38px", fontWeight: "800", color: "#063e2b", lineHeight: "1.3", margin: "0 0 15px 0", letterSpacing: "-0.5px" }}>
+            {berita.judul}
+          </h1>
+
+          {/* ✍️ Info Penulis (Persis seperti layout di image_fc2c50.jpg) */}
+          <p style={{ fontSize: "14px", color: "#64748b", fontWeight: "500", margin: "0 0 35px 0", borderBottom: "1px solid #f1f5f9", paddingBottom: "20px" }}>
+            Ditulis oleh: <span style={{ color: "#063e2b", fontWeight: "600" }}>{penulisBerita}</span>
+          </p>
+
+          {/* 📸 Gambar Utama Berita dengan Sudut Melengkung Halus */}
+          {berita.gambar && (
+            <div style={{ width: "100%", overflow: "hidden", borderRadius: "20px", marginBottom: "40px" }}>
+              <img 
+                src={berita.gambar} 
+                alt={berita.judul} 
+                style={{ 
+                  width: "100%", 
+                  height: "auto", 
+                  maxHeight: "480px", 
+                  objectFit: "cover",
+                  display: "block"
+                }} 
+              />
+            </div>
+          )}
+
+          {/* 📝 Isi Teks Paragraf Rata Kanan-Kiri */}
+          <div style={{ color: "#334155", fontSize: "17.5px", lineHeight: "1.85", textAlign: "justify", letterSpacing: "0.1px" }}>
+            {berita.konten_lengkap.split('\n').map((paragraf, index) => {
+              if (!paragraf.trim()) return null;
+              return (
+                <p key={index} style={{ marginBottom: "24px" }}>
+                  {paragraf}
+                </p>
+              );
+            })}
+          </div>
+
+        </article>
+
+        {/* Footer Hak Cipta */}
+        <div style={{ textAlign: "center", marginTop: "40px", color: "#94a3b8", fontSize: "13px", fontWeight: "500" }}>
+          © 2026 Kampus Alam Tegalsari Indonesia. Seluruh hak cipta dilindungi.
         </div>
 
       </div>

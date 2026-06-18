@@ -119,7 +119,7 @@ const DATABASE_VOLUNTEER = {
         peran: "Pendidikan dan Inovasi", 
         asal: "Malang", 
         bergabung: "2026", 
-        email: "pinaa.dewii@gmail.com", 
+        email: "pinaa.dewi@gmail.com", 
         status: "Aktif",
         foto: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=256&q=80",
         linkSertifikat: "#" 
@@ -187,7 +187,7 @@ const DATABASE_VOLUNTEER = {
       { 
         nama: "Anggi Nur Fadilah", 
         peran: "Humas dan Kemitraan", 
-        asal: "Malang", 
+        asal: "Jombang", 
         bergabung: "2026", 
         email: "anggifadlhh@gmail.com", 
         status: "Aktif",
@@ -196,8 +196,8 @@ const DATABASE_VOLUNTEER = {
       },
       { 
         nama: "QOYYUM FARIDATUN NAJIHAH", 
-        peran: "Pendidikan dan Inovasi", 
-        asal: "Malang", 
+        peran: "Humas dan Kemitraan", 
+        asal: "Kutai Timur", 
         bergabung: "2026", 
         email: "yumibuuy23@gmail.com", 
         status: "Aktif",
@@ -205,9 +205,9 @@ const DATABASE_VOLUNTEER = {
         linkSertifikat: "#" 
       },
       { 
-        nama: "mahardika anugrah", 
+        nama: "Mahardika Anugrah", 
         peran: "pendidikan dan inovasi", 
-        asal: "Malang", 
+        asal: "Palembang", 
         bergabung: "2026", 
         email: "mahardikaanugrahanugrah@gmail.com", 
         status: "Aktif",
@@ -215,9 +215,9 @@ const DATABASE_VOLUNTEER = {
         linkSertifikat: "#" 
       },
       { 
-        nama: "muhammad nizam azzamroni", 
+        nama: "Muhammad Nizam Azzamroni", 
         peran: "Humas dan Kemitraan", 
-        asal: "Malang", 
+        asal: "Lamongan", 
         bergabung: "2026", 
         email: "sulaimantulung73@gmail.com", 
         status: "Aktif",
@@ -230,6 +230,26 @@ const DATABASE_VOLUNTEER = {
         asal: "Malang", 
         bergabung: "2026", 
         email: "250605110205@student.uin-malang.ac.id", 
+        status: "Aktif",
+        foto: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=256&q=80",
+        linkSertifikat: "#" 
+      },
+      { 
+        nama: "Dimas Yon Setyawan", 
+        peran: "Kreatif dan Komunikasi", 
+        asal: "Kediri", 
+        bergabung: "2026", 
+        email: "samid@gmail.com", 
+        status: "Aktif",
+        foto: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=256&q=80",
+        linkSertifikat: "#" 
+      },
+      { 
+        nama: "Dimas Yon Setyawan", 
+        peran: "Kreatif dan Komunikasi", 
+        asal: "Mojokerto", 
+        bergabung: "2026", 
+        email: "Fajar Maulana@gmail.com", 
         status: "Aktif",
         foto: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=256&q=80",
         linkSertifikat: "#" 
