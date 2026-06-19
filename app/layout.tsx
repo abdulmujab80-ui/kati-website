@@ -262,7 +262,7 @@ export default function RootLayout({
               <div>
                 <h4 style={{ color: '#ffffff', fontSize: '13px', fontWeight: '700', marginBottom: '20px', textTransform: 'uppercase', letterSpacing: '1px' }}>Sekretariat Pusat</h4>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '13.5px' }}>
-                  <p style={{ margin: 0, color: '#cbd5e1' }}>📍 Dusun Umbulrejo RT 14 RW 05, Desa Sidodadi, kecamatan Gedangan, Kabupaten Malang, Jawa Timur</p>
+                  <p style={{ margin: 0, color: '#cbd5e1' }}>📍 Dusun Umbulrejo RT 15 RW 05, Desa Sidodadi, kecamatan Gedangan, Kabupaten Malang, Jawa Timur</p>
                   <p style={{ margin: 0, color: '#cbd5e1' }}>📞 +62 813-3686-7676 (Faradis)</p>
                 </div>
               </div>
